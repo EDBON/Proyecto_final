@@ -1,133 +1,81 @@
+{% extends 'home.html' %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Área del Paciente - Clinic Master{% endblock %}</title>
-
-    <!-- Bootstrap y Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <style>
-        .carousel-container {
-            width: 80%;
-            height: 300px;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .intro-section {
-            text-align: center;
-            margin: 50px auto;
-            max-width: 800px;
-        }
-
-        .intro-section h2 {
-            font-weight: bold;
-        }
-
-        .intro-section p {
-            font-size: 1.1rem;
-        }
-    </style>
+    <title>{% block title %}Clinic Master{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'images/logo-clinic_master.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/listar.css' %}"> 
+    {% block extra_css %}{% endblock %} {# Para CSS adicional de plantillas hijas #}
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container-fluid">
-        <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
-            ☰ Menú
-        </button>
-        <a class="navbar-brand ms-2" href="{% url 'home' %}">Clinic Master</a>
-        <div class="ms-auto">
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-white text-decoration-none">
-                    <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-                </button>
-            </form>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo">
+                <span class="app-name">Clinic Master</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'home' %}" data-tooltip="Dashboard"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+                <li><a href="{% url 'listar_formacion' empleado.id %}" data-tooltip="Personas"><i class="fas fa-user-friends"></i> <span>Mi Formacion</span></a></li>
+                <li><a href="{% url 'listar_documentos_empleado' %}" data-tooltip="Empleados"><i class="fas fa-briefcase"></i> <span>Mis Documentos</span></a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Cerrar sesión</span></button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="main-content-wrapper" id="main-content-wrapper">
+            <header class="navbar">
+                <div class="navbar-left">
+                    <button class="toggle-sidebar-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+                </div>
+                <div class="navbar-right">
+                    <span class="user-info">Hola, {{ request.user.persona }}!</span> {# Puedes mostrar el nombre del usuario logueado aquí #}
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                {% block content %}
+                {% endblock %}
+            </main>
+
+            <footer class="footer">
+                <div class="footer-container">
+                    <p>© 2024 Clinic Master. Todos los derechos reservados.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacidad</a>
+                        <a href="#">Términos</a>
+                        <a href="#">Soporte</a>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
-</nav>
 
-<!-- Menú lateral -->
-<div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebarMenu">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Menú del Paciente</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                
-                </a>
-                <a class="nav-link text-white" href="{% url 'listar_formacion' empleado.id %}">
-                    <i class="bi bi-calendar-check me-1"></i> Mi Formación
-                <a class="nav-link text-white" href="{% url 'listar_documentos_empleado' %}">
-                    <i class="bi bi-calendar-check me-1"></i> Mis Documentos
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<!-- Carrusel de imágenes -->
-<div class="carousel-container mt-4">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{% static 'images/pag_img1.jpg' %}" class="d-block w-100" alt="Imagen 1">
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'images/pag_web2.jpg' %}" class="d-block w-100" alt="Imagen 2">
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'images/pag_web3.jpg' %}" class="d-block w-100" alt="Imagen 3">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
-    </div>
-</div>
-
-<!-- Sección de introducción -->
-<div class="intro-section">
-    <h2>Bienvenido al Portal del Paciente</h2>
-    <p>
-        Aquí podrás consultar tus citas médicas agendadas, acceder a tu historial de atenciones y solicitar nuevas citas con facilidad.  
-        Este sistema está diseñado para brindarte una experiencia cómoda, rápida y segura.
-    </p>
-    <p class="text-muted">Utiliza el menú lateral para comenzar.</p>
-</div>
-
-<!-- Contenido principal -->
-<div class="container mt-4">
-    {% block content %}{% endblock %}
-</div>
-
-<!-- Footer -->
-<footer class="text-center mt-4 p-3 bg-light">
-    <p class="mb-0">© 2024 Clinic Master. Todos los derechos reservados.</p>
-</footer>
-
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var mainContentWrapper = document.getElementById('main-content-wrapper');
+            sidebar.classList.toggle('collapsed');
+            mainContentWrapper.classList.toggle('expanded');
+        }
+    </script>
+    {% block extra_js %}{% endblock %} {# Para JS adicional de plantillas hijas #}
 </body>
 </html>

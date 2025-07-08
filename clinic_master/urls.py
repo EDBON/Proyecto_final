@@ -84,7 +84,6 @@ urlpatterns = [
     path('actualizar_empleado/<int:empleado_id>/', views.actualizar_empleado, name='actualizar_empleado'),
     path('eliminar_empleado/<int:empleado_id>/', views.eliminar_empleado, name='eliminar_empleado'),
     
-    # /// nuevo
     # region Rutas para DocumentosEmpleado
     path('crear_documento_empleado/', views.crear_documento_empleado, name='crear_documento_empleado'),
     path('listar_documentos_empleado/', views.listar_documentos_empleado, name='listar_documentos_empleado'),

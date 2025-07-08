@@ -1,144 +1,89 @@
-/* Estilos generales para las páginas de listado */
-.content-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+/* Estilos para tablas */
+table {
+  width: 100%; /* Las tablas ocupan todo el ancho disponible */
+  border-collapse: collapse; /* Colapsa los bordes de las celdas */
+  margin-bottom: 20px; /* Espacio debajo de la tabla */
+  background-color: white; /* Fondo blanco para las tablas */
+  color: #333; /* Color de texto oscuro para las tablas, similar al del footer */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra similar a las tarjetas */
+  border-radius: 15px; /* Bordes redondeados como las tarjetas */
+  overflow: hidden; /* Asegura que los bordes redondeados se apliquen correctamente */
 }
 
-h2 {
-  text-align: center;
-  color: #006699;
-  margin-bottom: 30px;
+/* Encabezados de tabla */
+th {
+  background-color: #004080; /* Color de fondo similar al título del main-content */
+  color: white; /* Texto blanco para los encabezados */
+  padding: 15px 20px; /* Espaciado interno */
+  text-align: left; /* Alineación de texto a la izquierda */
+  font-size: 1.1rem; /* Tamaño de fuente ligeramente más grande */
+  border-bottom: 2px solid #002b5c; /* Borde inferior más oscuro */
 }
 
-/* Estilo general de las tablas */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* Celdas de la tabla */
+td {
+  padding: 12px 20px; /* Espaciado interno */
+  border-bottom: 1px solid #e0e0e0; /* Borde inferior claro para las celdas */
+  text-align: left; /* Alineación de texto a la izquierda */
 }
 
-.table th, .table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+/* Filas impares para un mejor contraste */
+tbody tr:nth-child(odd) {
+  background-color: #f8f8f8; /* Un color ligeramente diferente para filas impares */
 }
 
-.table th {
-  background-color: #006699;
-  color: #fff;
-  font-weight: bold;
+/* Efecto hover en las filas de la tabla */
+tbody tr:hover {
+  background-color: #e6f7ff; /* Color de fondo al pasar el ratón, similar al color de hover del footer */
+  cursor: pointer; /* Cambia el cursor a puntero para indicar interactividad */
 }
 
-.table-striped tr:nth-child(even) {
-  background-color: #f9f9f9;
+/* Primera y última celda de la tabla para bordes redondeados */
+table th:first-child {
+  border-top-left-radius: 15px;
 }
 
-.table-striped tr:hover {
-  background-color: #f1f1f1;
+table th:last-child {
+  border-top-right-radius: 15px;
 }
 
-/* Botones de acción en la tabla */
-.table .btn {
-  padding: 8px 15px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+table tr:last-child td:first-child {
+  border-bottom-left-radius: 15px;
 }
 
-.table .btn-warning {
-  background-color: #ffc107;
-  color: #fff;
-  border: none;
+table tr:last-child td:last-child {
+  border-bottom-right-radius: 15px;
 }
 
-.table .btn-warning:hover {
-  background-color: #e0a800;
-  transform: scale(1.05);
-}
-
-.table .btn-danger {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-}
-
-.table .btn-danger:hover {
-  background-color: #c82333;
-  transform: scale(1.05);
-}
-
-/* Estilo para la imagen de la persona */
-.table img {
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.table img:hover {
-  transform: scale(1.05);
-}
-
-/* Contenedor de tabla con desplazamiento */
-.table-responsive {
-  max-height: 400px;
-  overflow-y: auto;
-  margin-bottom: 20px;
-}
-
-/* Mensajes cuando no hay resultados */
-.empty-message {
-  color: #555;
-  font-size: 1.1rem;
-  text-align: center;
-  margin-top: 20px;
-}
-
-/* Estilo de botones de acción en la página */
-.btn-action {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #006699;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  text-decoration: none;
-  text-align: center;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.btn-action:hover {
-  background-color: #00557f;
-  transform: scale(1.05);
-}
-
-.btn-action:active {
-  background-color: #004666;
-}
-
-/* Ajustes responsivos */
+/* Estilos responsivos para tablas pequeñas */
 @media (max-width: 768px) {
-  .content-container {
-    width: 95%;
-    padding: 10px;
+  table, thead, tbody, th, td, tr {
+      display: block; /* Muestra los elementos de la tabla como bloques */
   }
 
-  .table th, .table td {
-    font-size: 0.9rem;
-    padding: 8px;
+  thead tr {
+      position: absolute;
+      top: -9999px; /* Oculta los encabezados en pantallas pequeñas */
+      left: -9999px;
   }
 
-  .table img {
-    width: 60px;
-    height: 60px;
+  td {
+      border: none; /* Elimina los bordes de las celdas */
+      border-bottom: 1px solid #e0e0e0; /* Mantiene un borde inferior */
+      position: relative;
+      padding-left: 50%; /* Espacio para la etiqueta del encabezado */
+      text-align: right; /* Alinea el texto a la derecha */
   }
 
-  .table .btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
+  td:before {
+      content: attr(data-label); /* Muestra el contenido del atributo data-label */
+      position: absolute;
+      left: 0;
+      width: 45%;
+      padding-left: 10px;
+      white-space: nowrap;
+      text-align: left;
+      font-weight: bold;
+      color: #004080; /* Color similar a los títulos */
   }
 }

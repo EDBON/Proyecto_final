@@ -20,13 +20,22 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <!-- Activación de Flatpickr -->
 <script>
-    flatpickr(".flatpickr", {
-        dateFormat: "Y-m-d",  // Formato de la fecha (AAAA-MM-DD)
-        altInput: true,       // Muestra el valor en un formato más amigable
-        altFormat: "F j, Y",  // Formato alternativo (Ej: March 20, 2025)
-        locale: "es",          // Cambia el idioma al español
-        maxDate: new Date(),    // Máximo: hoy (año actual)
-        minDate: "1920-01-01"   // Mínimo: 1 de enero de 1900
+    document.addEventListener('DOMContentLoaded', function() {
+        // Calcula la fecha de hoy
+        const today = new Date();
+        
+        // Calcula la fecha máxima: 18 años antes de hoy
+        // Restamos 18 años al año actual
+        const maxAllowedDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+        flatpickr(".flatpickr", {
+            dateFormat: "Y-m-d",      // Formato de la fecha (AAAA-MM-DD)
+            altInput: true,           // Muestra el valor en un formato más amigable
+            altFormat: "F j, Y",      // Formato alternativo (Ej: March 20, 2025)
+            locale: "es",             // Cambia el idioma al español
+            maxDate: maxAllowedDate,  // Máximo: la fecha que es 18 años antes de hoy
+            minDate: "1920-01-01"     // Mínimo: 1 de enero de 1920 (puedes ajustar esto)
+        });
     });
 </script>
 

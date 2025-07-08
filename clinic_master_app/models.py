@@ -215,10 +215,11 @@ class Formacion(models.Model):
 #region Contrato
 class Contrato(models.Model):
     TIPO_CONTRATO_CHOICES = [
-        ('temporal', 'Temporal'),
-        ('indefinido', 'Indefinido'),
-        ('practicas', 'Prácticas'),
-    ]
+        ('INDEFINIDO', 'Indefinido'),
+        ('FIJO', 'A término fijo'),
+        ('OBRA', 'Obra o labor'),
+        ('SERVICIOS', 'Prestación de servicios'),]
+
     
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, null=True)  # Relación con el Empleado
     salario = models.DecimalField(max_digits=10, decimal_places=2)  # Salario

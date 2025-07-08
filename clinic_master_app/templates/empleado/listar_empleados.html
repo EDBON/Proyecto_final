@@ -13,28 +13,28 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Foto</th>
                         <th>Nombre</th>
                         <th>Área de Trabajo</th>
                         <th>Estado</th>
                         <th>Puesto</th>
-                        <th>Firma</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for empleado in empleados %}
                     <tr>
+                        <td>                    
+                            {% if persona.imagen %}
+                                <img src="{{ persona.imagen.url }}" alt="Imagen de {{ persona.nombres }}" width="100">
+                            {% else %}
+                                <img src="{% static 'img/usuarios_pre.png' %}" alt="Imagen predeterminada" width="100">
+                            {% endif %}
+                        </td>     
                         <td>{{ empleado.id_persona.nombre }} {{ empleado.id_persona.apellido }}</td>
                         <td>{{ empleado.area_trabajo }}</td>
                         <td>{{ empleado.estado }}</td>
                         <td>{{ empleado.puesto_empresa }}</td>
-                        <td>                    
-                            {% if empleado.imagen_firma %}
-                            <img src="{{ empleado.imagen_firma.url }}" alt="Firma de {{ empleado.id_persona.nombre }}" width="100">
-                            {% else %}
-                            <img src="{% static 'img/blanco.jpg' %}" alt="Imagen de firma predeterminada" width="100">
-                            {% endif %}
-                        </td>
                         <td>
                             <a href="{% url 'actualizar_empleado' empleado.id %}" class="btn btn-warning btn-sm">Editar</a>
                             <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn btn-danger btn-sm">Eliminar</a>

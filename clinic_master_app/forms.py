@@ -4,6 +4,9 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm,UserCre
 from django_select2.forms import Select2MultipleWidget
 from django.contrib.auth import authenticate
 from django_select2.forms import ModelSelect2Widget
+from datetime import date
+from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError 
 
 
 # region Login Form
@@ -69,7 +72,7 @@ class PersonaForm(forms.ModelForm):
 class ContratoForm(forms.ModelForm):
     class Meta:
         model = Contrato
-        fields = '__all__'  # Incluye todos los campos del modelo
+        fields = '__all__'
         widgets = {
             'empleado': forms.Select(attrs={'class': 'select2 form-select'}),
             'salario': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -79,19 +82,44 @@ class ContratoForm(forms.ModelForm):
             'documento_contrato': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
+    # Validación a nivel de campo para salario (si aún la quieres aquí)
     def clean_salario(self):
-        salario = self.cleaned_data['salario']
-        if salario <= 0:
-            raise forms.ValidationError("El salario debe ser un valor positivo.")
+        salario = self.cleaned_data.get('salario')
+        if salario is not None and salario <= 0: # Asegúrate de que no sea None antes de comparar
+            raise ValidationError("El salario debe ser un valor positivo.")
         return salario
 
-    def clean_fecha_fin(self):
-        fecha_inicio = self.cleaned_data.get('fecha_inicio')
-        fecha_fin = self.cleaned_data.get('fecha_fin')
-        if fecha_fin and fecha_fin < fecha_inicio:
-            raise forms.ValidationError("La fecha de finalización no puede ser anterior a la de inicio.")
-        return fecha_fin
+    # Validación a nivel del formulario para fecha_fin
+    def clean(self):
+        cleaned_data = super().clean()
+        tipo_contrato = cleaned_data.get('tipo_contrato')
+        fecha_inicio = cleaned_data.get('fecha_inicio')
+        fecha_fin = cleaned_data.get('fecha_fin')
 
+        # Lógica para fecha_fin
+        if tipo_contrato == 'INDEFINIDO':
+            # Para contratos indefinidos, fecha_fin debe ser nula (no obligatoria)
+            if fecha_fin:
+                # Si el usuario seleccionó una fecha_fin para un contrato indefinido,
+                # puedes lanzar un error o simplemente ignorarla/anularla.
+                # Aquí, lanzamos un error para que sea explícito.
+                raise ValidationError(
+                    {'fecha_fin': "Un contrato indefinido no debe tener una fecha de finalización."}
+                )
+            # Si fecha_fin es None, es válido para indefinido, no hacemos nada.
+        else:
+            # Para otros tipos de contrato (FIJO, OBRA, SERVICIOS), fecha_fin es obligatoria
+            if not fecha_fin:
+                raise ValidationError(
+                    {'fecha_fin': "La fecha de finalización es obligatoria para este tipo de contrato."}
+                )
+            # Si fecha_fin existe, validamos que no sea anterior a fecha_inicio
+            if fecha_inicio and fecha_fin and fecha_fin < fecha_inicio:
+                raise ValidationError(
+                    {'fecha_fin': "La fecha de finalización no puede ser anterior a la de inicio."}
+                )
+
+        return cleaned_data
 
 # region Formacion Form
 
