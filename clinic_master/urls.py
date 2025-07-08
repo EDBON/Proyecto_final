@@ -25,7 +25,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # region lagin
-    path("", views.login_view, name="login"),
+    path("", views.inicio_view, name="inicio"),
+    path("login/", views.login_view, name="login"),
     
     path('restablecer/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('restablecer/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
@@ -34,6 +35,7 @@ urlpatterns = [
 
     #region info
     path('sobre_nosotros/', views.sobre_nosotros, name='sobre_nosotros'),
+    path('innovacion/', views.innovacion, name='innovacion'),
 
     # region usuario
     # path('crear_usuario/', views.crear_usuario, name='crear_usuario'),
@@ -42,8 +44,6 @@ urlpatterns = [
     path('eliminar_usuario/<int:usuario_id>/', views.eliminar_usuario, name='eliminar_usuario'),
     
     
-    
-
     path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
     
     # home

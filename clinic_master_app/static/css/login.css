@@ -1,92 +1,354 @@
-/* Fondo con imagen difuminada */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-blue: #2F80ED;
+    --text-color-dark: #333333;
+    --text-color-light: #828282;
+    --border-color: #E0E0E0;
+    --background-grey: #F8F8F8;
+    --white: #FFFFFF;
+}
+
 body {
     margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('/static/images/pag_web2.jpg') no-repeat center center fixed;
-    background-size: cover;
-    position: relative;
-    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../images/imagen-login.jpg');
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
+.main-container {
+    display: flex;
     width: 100%;
-    height: 100%;
-    background: inherit;
-    filter: blur(8px);
-    z-index: -1;
+    max-width: 1200px; /* Adjust as needed */
+    height: 90vh; /* Adjust height for visual appeal */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--white);
+    border: solid 1px white;
 }
 
-/* Contenedor blanco */
-.login-container {
-    position: relative;
-    max-width: 400px;
-    margin: 6% auto;
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    border: 1px solid #000000;
+.login-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 60px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative; /* ¡IMPORTANTE! Añadir esta línea */
+}
+
+/* Estilos para el botón de regresar */
+.back-button {
+    position: absolute;
+    top: 25px; /* Ajusta la distancia desde la parte superior */
+    left: 30px; /* Ajusta la distancia desde la izquierda */
+    z-index: 10; /* Asegura que esté por encima de otros elementos */
+}
+
+.back-button a {
+    text-decoration: none;
+    color: var(--text-color-light); /* O el color que desees, por ejemplo #555 */
+    font-size: 1.5rem; /* Tamaño del icono */
+    transition: color 0.2s ease;
+}
+
+.back-button a:hover {
+    color: var(--primary-blue); /* Cambia de color al pasar el ratón */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--text-color-dark);
+}
+
+.logo img {
+    height: 32px; /* Adjust logo size */
+    margin-right: 10px;
+}
+
+.login-content {
+    max-width: 380px; /* Constrain content width */
+    width: 100%;
+}
+
+.start-journey {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    margin-bottom: 8px;
 }
 
 h2 {
-    text-align: center;
-    color: #2261b0;
-    margin-bottom: 25px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #2c3e50;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-    transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-    border-color: #2261b0;
-    outline: none;
-}
-
-button {
-    width: 100%;
-    background-color: #2261b0;
-    color: white;
-    font-weight: bold;
-    padding: 12px;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #174a86;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-top: 0;
+    margin-bottom: 30px;
 }
 
 .alert {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-radius: 5px;
-    padding: 12px;
+    background-color: #ffe0b2; /* Light orange for warning */
+    color: #e65100; /* Dark orange text */
+    padding: 10px 15px;
+    border-radius: 8px;
     margin-bottom: 20px;
-    text-align: center;
+    font-size: 0.9rem;
+    border: 1px solid #ffcc80;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-color-dark);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 12px 40px 12px 15px; /* Adjust padding for icon */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color-dark);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.input-with-icon input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+.input-with-icon .fas,
+.input-with-icon .far {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color-light);
+}
+
+.btn-signup {
+    width: 100%;
+    padding: 14px;
+    background-color: rgb(236, 236, 236); /* Color inicial gris, como en .transition */
+    color: rgb(0, 0, 0); /* Color inicial de texto negro */
+    border: none;
+    border-radius: 15px; /* Redondeado, como en .transition */
+    font-size: 1.1rem;
     font-weight: 600;
+    cursor: pointer;
+    overflow: hidden; /* ¡IMPORTANTE para la transición! */
+    position: relative; /* ¡IMPORTANTE para el pseudo-elemento! */
+    text-decoration: none; /* Por si acaso, si lo usas como <a> */
+    transition: color 0.3s ease; /* Transición para el color del texto */
+    z-index: 1; /* Para controlar el apilamiento */
+}
+
+.btn-signup::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%; /* Inicia fuera del botón a la izquierda */
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-blue); /* Usa tu azul principal o #0066cc */
+    transition: left 0.7s ease; /* Transición para el movimiento del fondo */
+    z-index: -1; /* Envía el fondo por detrás del texto */
+}
+
+.btn-signup:hover::before {
+    left: 0; /* Al hacer hover, el fondo se mueve desde la izquierda */
+}
+
+.btn-signup:hover {
+    color: #ffffff;
+}
+
+.or-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 30px 0;
+    color: var(--text-color-light);
+    font-size: 0.85rem;
+}
+
+.or-separator .line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--border-color);
+}
+
+.or-separator .text {
+    padding: 0 15px;
+}
+
+.social-login {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 12px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--white);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--text-color-dark);
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-btn:hover {
+    border-color: var(--primary-blue);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.social-btn.facebook {
+    color: #1877F2;
+}
+.social-btn.google {
+    color: #DB4437;
+}
+.social-btn.apple {
+    color: #000000;
+}
+
+
+.has-account {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+}
+
+.has-account a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.has-account a:hover {
+    text-decoration: underline;
+}
+
+.login-right {
+    flex: 1;
+    background: linear-gradient(rgba(47, 128, 237, 0.6), rgba(235, 87, 87, 0.6)), /* Capa de color semitransparente */
+                url('../images/imagen-login.jpg') no-repeat center center/cover; /* Tu imagen de fondo */
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente */
+    text-align: center;      /* Centra el texto */
+    color: var(--white);     /* Color de texto blanco para contraste */
+    padding: 20px;           /* Espaciado interno */
+    box-sizing: border-box;
+    position: relative; /* Necesario para la superposición si se añade más */
+    overflow: hidden; /* Asegura que el contenido y la imagen no se desborden */
+}
+
+.welcome-text-overlay {
+    z-index: 1; /* Asegura que el texto esté por encima de la capa de color */
+    max-width: 80%; /* Limita el ancho del texto para legibilidad */
+}
+
+.welcome-text-overlay h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mejor legibilidad */
+}
+
+.welcome-text-overlay p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .login-right {
+        display: none; /* Hide background image on smaller screens */
+    }
+
+    .main-container {
+        width: 90%;
+        height: auto;
+        padding: 30px 20px;
+        flex-direction: column;
+        border-radius: 12px;
+    }
+
+    .login-left {
+        padding: 30px 20px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .back-button {
+        top: 15px; /* Ajusta para pantallas más pequeñas */
+        left: 15px; /* Ajusta para pantallas más pequeñas */
+    }
+
+    .login-content {
+        max-width: none; /* Allow content to take full width */
+    }
+
+    .social-login {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-left {
+        padding: 20px 15px;
+    }
+
+    h2 {
+        font-size: 1.7rem;
+    }
+
+    .form-group label {
+        font-size: 0.85rem;
+    }
+
+    .input-with-icon input,
+    .btn-signup {
+        font-size: 0.95rem;
+        padding: 10px 15px;
+    }
+
+    .social-btn {
+        padding: 10px 0;
+        font-size: 1rem;
+    }
 }

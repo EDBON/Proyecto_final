@@ -4,18 +4,18 @@ from clinic_master_app.models import Usuario, Persona, Empleado
 
 @receiver(post_migrate)
 def create_default_user(sender, **kwargs):
-    if not Usuario.objects.filter(username='diego').exists():
+    if not Usuario.objects.filter(username='fabian').exists():
         # Crear una Persona
         persona = Persona.objects.create(
             tipo_doc="CC",
             num_doc="123456789",
-            nombre="Diego",
-            apellido="Pérez",
-            fecha_nac="1990-01-01",
+            nombre="Fabian",
+            apellido="Bonilla",
+            fecha_nac="2005-12-28",
             genero="Masculino",
             direccion="Calle 123",
             telefono="1234567890",
-            email="diego@example.com",
+            email="fabian@gmail.com",
             eps=None  # O podés asignar una EPS existente
         )
 
@@ -30,12 +30,12 @@ def create_default_user(sender, **kwargs):
 
         # Crear Usuario vinculado a Persona Y Empleado (¡IMPORTANTE PASAR empleado!)
         user = Usuario.objects.create_superuser(
-            username='diego',
-            email='diego@example.com',
+            username='fabian',
+            email='fabian@gmail.com',
             password='12345',
             persona=persona,
             empleado=empleado,            # <-- Esto faltaba
             puesto_empresa="auxiliar"
         )
 
-        print("✅ Usuario 'diego' creado correctamente con Persona y Empleado.")
+        print("✅ Usuario 'fabian' creado correctamente con Persona y Empleado.")

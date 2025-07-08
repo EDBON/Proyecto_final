@@ -5,6 +5,12 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 #region Inicio
 
+from django.shortcuts import render
+
+def inicio_view(request):
+    return render(request, "inicio.html")
+
+
 def home(request):
     return render(request, 'home.html') 
 def medico(request):
@@ -85,6 +91,9 @@ def login_view(request):
 #region informacion 
 def sobre_nosotros(request):
     return render(request, 'info/sobre_nosotros.html')
+
+def innovacion(request):
+    return render(request, 'info/innovacion.html')
 
 # region persona
 # crear persona

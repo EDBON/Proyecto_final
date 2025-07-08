@@ -1,60 +1,39 @@
 {% extends 'base.html' %}
 
+{% block title %} Clinic Master{% endblock %} {# Título más específico #}
+
+{% block page_title %}Talento Humano{% endblock %} {# Título que aparecerá en el navbar superior #}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="es">
+<div class="dashboard-section">
+    <h2>Conoce a Nuestro Talento Humano</h2>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Talento Humano IPS</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-</head>
+    <div class="card-grid"> {# Cambiado a card-grid para flexbox/grid #}
 
-<body>
-
-  <div class="main-content" id="main-content">
-    <!-- Contenedor de Talento Humano -->
-    <div class="content-container">
-      <h2>Conoce a Nuestro Talento Humano</h2>
-
-      <!-- Contenedor de tarjetas -->
-      <div class="card-container">
-
-        <!-- Tarjeta 1: Desarrollo Profesional -->
-        <div class="card">
-          <i class="fas fa-graduation-cap"></i>
-          <h3>Desarrollo Profesional</h3>
-          <p>Ofrecemos formación continua a nuestros empleados para garantizar su crecimiento y actualización en sus áreas de especialización.</p>
+        <div class="dashboard-card"> {# Cambiado a dashboard-card #}
+            <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+            <h3>Desarrollo Profesional</h3>
+            <p>Ofrecemos formación continua a nuestros empleados para garantizar su crecimiento y actualización en sus áreas de especialización.</p>
         </div>
 
-        <!-- Tarjeta 2: Bienestar y Calidad de Vida -->
-        <div class="card">
-          <i class="fas fa-heartbeat"></i>
-          <h3>Bienestar y Calidad de Vida</h3>
-          <p>Promovemos un entorno de trabajo saludable con programas de bienestar, seguros de salud y más beneficios para nuestros empleados.</p>
+        <div class="dashboard-card">
+            <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+            <h3>Bienestar y Calidad de Vida</h3>
+            <p>Promovemos un entorno de trabajo saludable con programas de bienestar, seguros de salud y más beneficios para nuestros empleados.</p>
         </div>
 
-        <!-- Tarjeta 3: Oportunidades de Crecimiento -->
-        <div class="card">
-          <i class="fas fa-chart-line"></i>
-          <h3>Oportunidades de Crecimiento</h3>
-          <p>Brindamos oportunidades de ascenso y desarrollo profesional dentro de nuestra IPS, apoyando el avance de cada uno de nuestros colaboradores.</p>
+        <div class="dashboard-card">
+            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>Oportunidades de Crecimiento</h3>
+            <p>Brindamos oportunidades de ascenso y desarrollo profesional dentro de nuestra IPS, apoyando el avance de cada uno de nuestros colaboradores.</p>
         </div>
 
-        <!-- Tarjeta 4: Nuestro Equipo -->
-        <div class="card">
-          <i class="fas fa-users"></i>
-          <h3>Nuestro Equipo</h3>
-          <p>Contamos con un equipo multidisciplinario de profesionales altamente capacitados en diferentes áreas de la salud.</p>
+        <div class="dashboard-card">
+            <div class="card-icon"><i class="fas fa-users"></i></div>
+            <h3>Nuestro Equipo</h3>
+            <p>Contamos con un equipo multidisciplinario de profesionales altamente capacitados en diferentes áreas de la salud.</p>
         </div>
 
-      </div>
     </div>
-  </div>
-
-</body>
-
-</html>
-
+</div>
 {% endblock %}

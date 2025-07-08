@@ -1,0 +1,563 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-blue: #2F80ED;
+    --dark-blue: #266bbd; /* Azul ligeramente más oscuro para hover */
+    --text-color-dark: #333333;
+    --text-color-light: #828282;
+    --border-color: #E0E0E0;
+    --background-grey: #F8F8F8;
+    --white: #FFFFFF;
+    --sidebar-width: 250px;
+    --sidebar-collapsed-width: 80px; /* Ancho cuando está colapsado */
+    --header-height: 70px;
+    --card-bg: #FFFFFF;
+    --card-shadow: rgba(0, 0, 0, 0.05);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-grey);
+    color: var(--text-color-dark);
+    line-height: 1.6;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Sidebar Styles --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+    overflow-x: hidden; /* Evita scrollbar horizontal al colapsar */
+    flex-shrink: 0; /* Evita que el sidebar se encoja más allá de su ancho */
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width); /* Mantiene un ancho para los iconos */
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative; /* Añadido para posicionar el logo/nombre al colapsar si fuera necesario */
+}
+
+.sidebar-header img {
+    height: 40px;
+    width: 40px;
+    margin-right: 15px;
+    border-radius: 50%;
+    background-color: var(--white);
+    padding: 5px;
+}
+
+.sidebar.collapsed .sidebar-header img {
+    margin: 0 auto; /* Centra el logo cuando está colapsado */
+    margin-bottom: 15px; /* Espacio debajo del logo */
+}
+
+.sidebar-header .app-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-header .app-name {
+    opacity: 0;
+    width: 0;
+    height: 0; /* Oculta el texto y su espacio */
+    margin: 0; /* Elimina cualquier margen */
+    padding: 0; /* Elimina cualquier padding */
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Permite que el menú ocupe el espacio disponible */
+}
+
+.sidebar-menu li {
+    margin-bottom: 5px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: background-color 0.2s ease, padding-left 0.2s ease;
+    border-left: 5px solid transparent; /* Para el indicador activo/hover */
+    position: relative; /* Necesario para el tooltip */
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active { /* Asume que podrías tener una clase 'active' */
+    background-color: var(--dark-blue);
+    border-left-color: var(--white);
+    padding-left: 25px; /* Efecto de indentación al pasar el ratón */
+}
+
+.sidebar.collapsed .sidebar-menu a:hover, /* Asegura que el hover funciona en modo colapsado */
+.sidebar.collapsed .sidebar-menu a.active {
+    padding-left: 0; /* Deshabilita la indentación al colapsar */
+    background-color: var(--dark-blue); /* Mantiene el color de fondo */
+    border-left-color: var(--white); /* Mantiene el borde */
+}
+
+
+.sidebar-menu a i {
+    font-size: 1.2rem;
+    margin-right: 15px;
+    width: 20px; /* Asegura un ancho fijo para el icono */
+    text-align: center;
+    transition: margin-right 0.3s ease;
+    flex-shrink: 0; /* Evita que el icono se encoja */
+}
+
+.sidebar-menu a span { /* Nuevo span alrededor del texto del enlace para control */
+    display: inline-block;
+    opacity: 1;
+    transition: opacity 0.3s ease, width 0.3s ease;
+    width: auto;
+}
+
+.sidebar.collapsed .sidebar-menu a {
+    padding: 12px 0; /* Centra iconos al colapsar */
+    justify-content: center; /* Centra el icono */
+    width: var(--sidebar-collapsed-width); /* Asegura que ocupe el ancho colapsado */
+}
+
+.sidebar.collapsed .sidebar-menu a i {
+    margin-right: 0; /* Elimina el margen del icono */
+}
+
+.sidebar.collapsed .sidebar-menu a span {
+    opacity: 0;
+    width: 0; /* Colapsa el ancho del texto */
+    overflow: hidden; /* Asegura que el texto no sea visible */
+}
+
+/* Tooltip para iconos cuando el sidebar está colapsado */
+.sidebar.collapsed .sidebar-menu a::after {
+    content: attr(data-tooltip); /* Usa el atributo data-tooltip */
+    position: absolute;
+    left: calc(var(--sidebar-collapsed-width) + 10px); /* Posición a la derecha del icono */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--text-color-dark);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none; /* Asegura que el tooltip no interfiera con el clic */
+    z-index: 999; /* Asegura que esté encima de todo */
+}
+
+/* Mostrar tooltip al hacer hover sobre el icono cuando colapsado */
+.sidebar.collapsed .sidebar-menu a:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.sidebar-footer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: auto;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidebar-footer .logout-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Necesario para el tooltip */
+}
+
+.sidebar-footer .logout-btn i {
+    margin-right: 10px;
+}
+
+.sidebar-footer .logout-btn span { /* Nuevo span alrededor del texto del botón */
+    opacity: 1;
+    transition: opacity 0.3s ease, width 0.3s ease;
+    width: auto;
+}
+
+.sidebar.collapsed .sidebar-footer .logout-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0 auto;
+    justify-content: center; /* Centra el icono */
+}
+
+.sidebar.collapsed .sidebar-footer .logout-btn i {
+    margin-right: 0;
+}
+
+.sidebar.collapsed .sidebar-footer .logout-btn span {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+/* Tooltip para botón de logout cuando el sidebar está colapsado */
+.sidebar.collapsed .sidebar-footer .logout-btn::after {
+    content: "Cerrar Sesión"; /* Contenido fijo para el tooltip de logout */
+    position: absolute;
+    left: calc(var(--sidebar-collapsed-width) + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--text-color-dark);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.sidebar.collapsed .sidebar-footer .logout-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* --- Main Content Wrapper Styles --- */
+.main-content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: var(--sidebar-width); /* Comienza con el margen del sidebar abierto */
+    transition: margin-left 0.3s ease;
+}
+
+.main-content-wrapper.expanded { /* Cambia el margen cuando el sidebar está colapsado */
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+
+/* --- Navbar/Header Superior Styles --- */
+.navbar {
+    height: var(--header-height);
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    z-index: 100; /* Asegura que esté por encima del contenido */
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-sidebar-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color-light);
+    margin-right: 20px;
+    transition: color 0.2s ease;
+}
+
+.toggle-sidebar-btn:hover {
+    color: var(--primary-blue);
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    margin: 0;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    font-size: 0.95rem;
+    color: var(--text-color-dark);
+    margin-right: 15px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-size: 1.5rem;
+}
+
+/* --- Content Area Styles --- */
+.content-area {
+    flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+    padding: 30px;
+    background-color: var(--background-grey);
+    overflow-y: auto; /* Habilita el scroll si el contenido es largo */
+}
+
+/* Dashboard Section (para Home.html) */
+.dashboard-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-bottom: 30px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.dashboard-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px var(--card-shadow);
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+    font-size: 3.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+}
+
+.dashboard-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-color-dark);
+}
+
+.dashboard-card p {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+}
+
+/* --- Footer Styles (actualizado para dashboard) --- */
+.footer {
+    background-color: var(--white);
+    padding: 20px 30px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+    flex-shrink: 0; /* Evita que el footer se encoja */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Alinea con el ancho principal si es necesario */
+    margin: 0 auto;
+}
+
+.footer-links a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-blue);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%; /* Oculto por defecto */
+        height: 100vh;
+        z-index: 1000; /* Asegura que esté por encima de todo */
+        width: var(--sidebar-width); /* En móvil siempre tendrá el ancho completo cuando esté abierto */
+    }
+
+    .sidebar.collapsed { /* Ahora "collapsed" significa que está cerrado en móvil */
+        left: -100%;
+    }
+    
+    /* Cuando el sidebar NO está colapsado (es decir, está abierto) */
+    .sidebar:not(.collapsed) .sidebar-header .app-name,
+    .sidebar:not(.collapsed) .sidebar-menu a span,
+    .sidebar:not(.collapsed) .sidebar-footer .logout-btn span {
+        opacity: 1; /* Mostrar elementos cuando está abierto en móvil */
+        width: auto;
+        display: inline;
+    }
+
+    .sidebar:not(.collapsed) .sidebar-header img,
+    .sidebar:not(.collapsed) .sidebar-menu a i,
+    .sidebar:not(.collapsed) .sidebar-footer .logout-btn i {
+        margin-right: 15px; /* Restaurar margen para iconos */
+    }
+    .sidebar:not(.collapsed) .sidebar-menu a {
+        justify-content: flex-start;
+        padding-left: 20px;
+    }
+    .sidebar:not(.collapsed) .sidebar-footer .logout-btn {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    /* Ocultar tooltips en móvil porque el sidebar siempre es completo o no visible */
+    .sidebar-menu a::after,
+    .sidebar-footer .logout-btn::after {
+        display: none !important;
+    }
+
+
+    .main-content-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .main-content-wrapper.expanded { /* No hace nada en móvil */
+        margin-left: 0;
+    }
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .user-info {
+        display: none; /* Ocultar nombre de usuario en pantallas pequeñas */
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr; /* Una columna en móvil */
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer-links a {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-header img {
+        height: 30px;
+        width: 30px;
+    }
+    .sidebar-header .app-name {
+        font-size: 1.2rem;
+    }
+    .sidebar-menu a {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
+    .sidebar-menu a i {
+        font-size: 1rem;
+        margin-right: 10px;
+    }
+    .sidebar-footer .logout-btn {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+    .navbar {
+        height: 60px;
+    }
+    .toggle-sidebar-btn {
+        font-size: 1.3rem;
+        margin-right: 10px;
+    }
+    .page-title {
+        font-size: 1.3rem;
+    }
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+    .content-area {
+        padding: 20px;
+    }
+    .dashboard-section h2 {
+        font-size: 1.7rem;
+    }
+    .dashboard-card {
+        padding: 20px;
+    }
+    .card-icon {
+        font-size: 3rem;
+    }
+    .dashboard-card h3 {
+        font-size: 1.2rem;
+    }
+    .dashboard-card p {
+        font-size: 0.85rem;
+    }
+    .footer {
+        padding: 15px 20px;
+    }
+}

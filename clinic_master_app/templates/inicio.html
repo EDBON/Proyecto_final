@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinic Master</title>
+  <link rel="shortcut icon" href="{% static 'images/logo.png' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header class="main-header">
+    <img class="logo" src="{% static 'images/logo-claro.png' %}" alt="">
+    <nav>
+      <ul>
+        <li><a class="transition" href="">Sobre nosotros</a></li>
+        <li><a class="transition" href="">Biblioteca de la Salud</a></li>
+        <li><a class="transition" href="">Contactanos</a></li>
+        <li><a class="transition" href="">Investigación</a></li>
+        <li><a class="transition" href="{% url 'login' %}"><svg xmlns="http://www.w3.org/2000/svg" 
+            width="30" 
+            height="30" 
+            fill="currentColor"
+            viewBox="0 0 16 16" 
+            style="vertical-align: middle; margin-right: 5px;">
+      <path d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
+      <path fill-rule="evenodd"
+        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-6a6 6 0 0 0-4.472 10.472C4.37 11.163 
+        5.83 10 8 10s3.63 1.163 4.472 2.472A6 6 0 0 0 8 2z" />
+    </svg> Iniciar Sesion</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="overlay">
+      <h1>Transformar el cuidado de tu salud</h1>
+      <div class="buttons">
+        <a href="{% url 'innovacion' %}" class="btn">Cómo impulsamos la innovación</a>
+        <a href="#" class="slide-button">Pide una cita</a>
+      </div>
+    </div>
+  </section>
+  <div class="main-content" id="main-content">
+    <!-- Contenedor de Talento Humano -->
+    <div class="content-container">
+      <h2>Conoce a Nuestro Talento Humano</h2>
+
+      <!-- Contenedor de tarjetas -->
+      <div class="card-container">
+
+        <!-- Tarjeta 1: Desarrollo Profesional -->
+        <div class="card">
+          <i class="fas fa-graduation-cap"></i>
+          <h3>Desarrollo Profesional</h3>
+          <p>Ofrecemos formación continua a nuestros empleados para garantizar su crecimiento y actualización en sus áreas de especialización.</p>
+        </div>
+
+        <!-- Tarjeta 2: Bienestar y Calidad de Vida -->
+        <div class="card">
+          <i class="fas fa-heartbeat"></i>
+          <h3>Bienestar y Calidad de Vida</h3>
+          <p>Promovemos un entorno de trabajo saludable con programas de bienestar, seguros de salud y más beneficios para nuestros empleados.</p>
+        </div>
+
+        <!-- Tarjeta 3: Oportunidades de Crecimiento -->
+        <div class="card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Oportunidades de Crecimiento</h3>
+          <p>Brindamos oportunidades de ascenso y desarrollo profesional dentro de nuestra IPS, apoyando el avance de cada uno de nuestros colaboradores.</p>
+        </div>
+
+        <!-- Tarjeta 4: Nuestro Equipo -->
+        <div class="card">
+          <i class="fas fa-users"></i>
+          <h3>Nuestro Equipo</h3>
+          <p>Contamos con un equipo multidisciplinario de profesionales altamente capacitados en diferentes áreas de la salud.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Logo -->
+            <div class="footer-section">
+                <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo" class="footer-logo">
+                <p>© 2024 Clinic Master. Todos los derechos reservados.</p>
+            </div>
+
+            <!-- Información de contacto -->
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <ul>
+                    <li>📍 Dirección: Calle Salud #123, Ciudad Médica</li>
+                    <li>📞 Teléfono: +34 912 345 678</li>
+                    <li>📧 Correo: contacto@clinicmaster.com</li>
+                </ul>
+            </div>
+
+            <!-- Enlaces útiles -->
+            <div class="footer-section">
+                <h4>Enlaces</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'sobre_nosotros' %}">Sobre nosotros</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Términos y condiciones</a></li>
+                </ul>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-section">
+                <h4>Síguenos</h4>
+                <ul class="social-links">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

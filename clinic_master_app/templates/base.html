@@ -3,116 +3,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Título de la página que puede ser sobrescrito por las plantillas hijas -->
-  <title>{% block title %}IPS Talento Humano{% endblock %}</title>
-     <link rel="shortcut icon" href="{% static 'images/logo-clinic_master.png' %}">
-  <!-- Fuentes y estilos -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Clinic Master{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'images/logo-clinic_master.png' %}">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> 
+    {% block extra_css %}{% endblock %} {# Para CSS adicional de plantillas hijas #}
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <nav>
-      <div class="logo">IPS Talento Humano</div>
-      <div class="nav-links">
-        <a href="#inicio">Inicio</a>
-        <a href="#vacantes">Vacantes</a>
-        <a href="#politicas">Políticas</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-      <!-- Botón Cerrar sesión en el Header -->
-      <div class="logout-container">
-        <form action="{% url 'logout' %}" method="post" class="logout-form">
-          {% csrf_token %}
-          <button type="submit" class="logout-btn">Cerrar sesión</button>
-        </form>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Barra lateral (Sidebar) con enlaces a las vistas de Django -->
-  <div class="sidebar" id="sidebar">
-    <div class="logo">IPS Talento Humano</div>
-    <!-- Enlaces redirigidos a las vistas de Django -->
-    <ul class="sidebar-menu">
-        <li><a href="{% url 'listar_personas' %}">Personas</a></li>
-        <li><a href="{% url 'listar_empleados' %}">Empleados</a></li>
-        <li><a href="{% url 'listar_usuarios' %}">Usuarios</a></li>
-        <li><a href="{% url 'listar_contratos' %}">Contratos</a></li>
-        <li><a href="{% url 'crear_usuario' %}">Crear Usuario</a></li>
-        <li><a href="{% url 'listar_movimientos' %}">Historial Movimientos</a></li>
-        <li><a href="{% url 'listar_relaciones_jerarquicas' %}">Relaciones Jerárquicas</a></li>
-        <li><a href="{% url 'listar_cargos' %}">Cargos</a></li>
-    </ul>
-  </div>
-
-  <!-- Botón para ocultar/mostrar barra lateral -->
-  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-
-  <!-- Contenido principal -->
-  <div class="main-content" id="main-content">
-    <div class="content-container">
-      <!-- Este bloque se sobrescribe en las plantillas hijas -->
-      {% block content %}
-      {% endblock %}
-    </div>
-  </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <!-- Logo -->
-            <div class="footer-section">
-                <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo" class="footer-logo">
-                <p>© 2024 Clinic Master. Todos los derechos reservados.</p>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo">
+                <span class="app-name">Clinic Master</span>
             </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'home' %}" data-tooltip="Dashboard"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+                <li><a href="{% url 'listar_personas' %}" data-tooltip="Personas"><i class="fas fa-user-friends"></i> <span>Personas</span></a></li>
+                <li><a href="{% url 'listar_empleados' %}" data-tooltip="Empleados"><i class="fas fa-briefcase"></i> <span>Empleados</span></a></li>
+                <li><a href="{% url 'listar_usuarios' %}" data-tooltip="Usuarios"><i class="fas fa-users"></i> <span>Usuarios</span></a></li>
+                <li><a href="{% url 'listar_contratos' %}" data-tooltip="Contratos"><i class="fas fa-file-contract"></i> <span>Contratos</span></a></li>
+                <li><a href="{% url 'crear_usuario' %}" data-tooltip="Crear Usuario"><i class="fas fa-user-plus"></i> <span>Crear Usuario</span></a></li>
+                <li><a href="{% url 'listar_movimientos' %}" data-tooltip="Historial Movimientos"><i class="fas fa-history"></i> <span>Historial Movimientos</span></a></li>
+                <li><a href="{% url 'listar_relaciones_jerarquicas' %}" data-tooltip="Relaciones Jerárquicas"><i class="fas fa-sitemap"></i> <span>Relaciones Jerárquicas</span></a></li>
+                <li><a href="{% url 'listar_cargos' %}" data-tooltip="Cargos"><i class="fas fa-user-tie"></i> <span>Cargos</span></a></li>
+                {# Puedes añadir más enlaces aquí si los necesitas #}
+            </ul>
 
-            <!-- Información de contacto -->
-            <div class="footer-section">
-                <h4>Contacto</h4>
-                <ul>
-                    <li>📍 Dirección: Calle Salud #123, Ciudad Médica</li>
-                    <li>📞 Teléfono: +34 912 345 678</li>
-                    <li>📧 Correo: contacto@clinicmaster.com</li>
-                </ul>
+            <div class="sidebar-footer">
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Cerrar sesión</span></button>
+                </form>
             </div>
+        </aside>
 
-            <!-- Enlaces útiles -->
-            <div class="footer-section">
-                <h4>Enlaces</h4>
-                <ul>
-                    <li><a href="{% url 'home' %}">Inicio</a></li>
-                    <li><a href="{% url 'sobre_nosotros' %}">Sobre nosotros</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Términos y condiciones</a></li>
-                </ul>
-            </div>
+        <div class="main-content-wrapper" id="main-content-wrapper">
+            <header class="navbar">
+                <div class="navbar-left">
+                    <button class="toggle-sidebar-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+                </div>
+                <div class="navbar-right">
+                    <span class="user-info">Hola, {{ request.user.username }}!</span> {# Puedes mostrar el nombre del usuario logueado aquí #}
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
 
-            <!-- Redes sociales -->
-            <div class="footer-section">
-                <h4>Síguenos</h4>
-                <ul class="social-links">
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">LinkedIn</a></li>
-                </ul>
-            </div>
+            <main class="content-area">
+                {% block content %}
+                {% endblock %}
+            </main>
+
+            <footer class="footer">
+                <div class="footer-container">
+                    <p>© 2024 Clinic Master. Todos los derechos reservados.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacidad</a>
+                        <a href="#">Términos</a>
+                        <a href="#">Soporte</a>
+                    </div>
+                </div>
+            </footer>
         </div>
-    </footer>
+    </div>
 
-  <!-- Script para el toggle de la barra lateral -->
-  <script>
-    function toggleSidebar() {
-      var sidebar = document.getElementById('sidebar');
-      var content = document.getElementById('main-content');
-      sidebar.classList.toggle('open');
-      content.classList.toggle('closed');
-    }
-  </script>
-
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var mainContentWrapper = document.getElementById('main-content-wrapper');
+            sidebar.classList.toggle('collapsed');
+            mainContentWrapper.classList.toggle('expanded');
+        }
+    </script>
+    {% block extra_js %}{% endblock %} {# Para JS adicional de plantillas hijas #}
 </body>
 </html>
