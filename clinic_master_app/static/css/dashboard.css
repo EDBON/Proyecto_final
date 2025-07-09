@@ -8,7 +8,7 @@
     --border-color: #E0E0E0;
     --background-grey: #F8F8F8;
     --white: #FFFFFF;
-    --sidebar-width: 250px;
+    --sidebar-width: 300px;
     --sidebar-collapsed-width: 80px; /* Ancho cuando está colapsado */
     --header-height: 70px;
     --card-bg: #FFFFFF;
@@ -329,18 +329,6 @@ body {
     margin-right: 15px;
 }
 
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary-blue);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--white);
-    font-size: 1.5rem;
-}
-
 /* --- Content Area Styles --- */
 .content-area {
     flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
@@ -560,4 +548,16 @@ body {
     .footer {
         padding: 15px 20px;
     }
+}
+
+.user-avatar a {
+  color: #696767; /* Color oscuro neutro */
+  font-size: 34px; /* Tamaño del icono */
+  text-decoration: none; /* Quitar subrayado */
+  margin-left: 10px;
+  transition: color 0.3s ease;
+}
+
+.user-avatar a:hover {
+  color: #2F80ED; /* Color azul solo al pasar el cursor */
 }

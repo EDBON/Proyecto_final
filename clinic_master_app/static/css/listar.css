@@ -87,3 +87,78 @@ table tr:last-child td:last-child {
       color: #004080; /* Color similar a los títulos */
   }
 }
+
+/* Botón Editar */
+.btn-edit {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745; /* Verde moderno */
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-edit:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* Botón Desactivar */
+.btn-des {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #dc3545; /* Rojo moderno */
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-des:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* Detalles */
+.detalle-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.detalle-info {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.detalle-foto {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+

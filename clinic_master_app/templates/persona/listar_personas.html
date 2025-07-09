@@ -5,46 +5,48 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/listar.css' %}">
-    <div class="content-container">
-        <h2>Lista de Personas</h2>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Foto</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for persona in persona_list %}
-                    <tr>
-                        <td>{{ persona.nombre }}</td>
-                        <td>{{ persona.apellido }}</td>
-                        <td>{{ persona.telefono }}</td>
-                        <td>{{ persona.email }}</td>
-                        <td>                    
-                            {% if persona.imagen %}
-                                <img src="{{ persona.imagen.url }}" alt="Imagen de {{ persona.nombres }}" width="100">
-                            {% else %}
-                                <img src="{% static 'img/usuarios_pre.png' %}" alt="Imagen predeterminada" width="100">
-                            {% endif %}
-                        </td>     
-                        <td>
-                            <a href="{% url 'actualizar_persona' persona.id %}" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="{% url 'desactivar_persona' persona.id %}" class="btn btn-danger btn-sm">Desactivar</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="empty-message">No hay personas disponibles.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+<div class="content-container">
+  <h2>Lista de Personas</h2>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Foto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for persona in persona_list %}
+        <tr>
+          <td>{{ persona.nombre }}</td>
+          <td>{{ persona.apellido }}</td>
+          <td>{{ persona.telefono }}</td>
+          <td>{{ persona.email }}</td>
+          <td>
+            {% if persona.imagen %}
+              <img src="{{ persona.imagen.url }}" alt="Imagen de {{ persona.nombre }}" width="100">
+            {% else %}
+              <img src="{% static 'img/usuarios_pre.png' %}" alt="Imagen predeterminada" width="100">
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'actualizar_persona' persona.id %}" class="btn-edit">Editar</a>
+            <a href="{% url 'detalle_persona' persona.id %}" class="btn-view">Ver usuario</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="empty-message">No hay personas disponibles.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

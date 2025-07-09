@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle de Persona{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/detalle.css' %}">
+
+<div class="detalle-container">
+    <h2>Detalle de {{ persona.nombre }} {{ persona.apellido }}</h2>
+
+    <div class="detalle-info">
+        <img src="{% if persona.imagen %}{{ persona.imagen.url }}{% else %}{% static 'img/usuarios_pre.png' %}{% endif %}" alt="Foto de {{ persona.nombre }}" class="detalle-foto">
+        
+        <ul>
+            <li><strong>Nombre:</strong> {{ persona.nombre }}</li>
+            <li><strong>Apellido:</strong> {{ persona.apellido }}</li>
+            <li><strong>Teléfono:</strong> {{ persona.telefono }}</li>
+            <li><strong>Email:</strong> {{ persona.email }}</li>
+        </ul>
+    </div>
+
+    <a href="{% url 'actualizar_persona' persona.id %}" class="btn-edit">Editar</a>
+    <a href="{% url 'listar_personas' %}" class="btn-view">Volver a la lista</a>
+</div>
+{% endblock %}

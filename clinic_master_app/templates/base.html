@@ -16,7 +16,7 @@
 <body>
 
     <div class="dashboard-container">
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar collapsed" id="sidebar">
             <div class="sidebar-header">
                 <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo">
                 <span class="app-name">Clinic Master</span>
@@ -38,23 +38,27 @@
             <div class="sidebar-footer">
                 <form action="{% url 'logout' %}" method="post" class="logout-form">
                     {% csrf_token %}
-                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Cerrar sesión</span></button>
+                    <button type="submit" class="logout-btn" data-tooltip="Cerrar Sesión"><i class="fas fa-sign-out-alt"></i> <span>Cerrar sesión</span></button>
                 </form>
             </div>
         </aside>
 
-        <div class="main-content-wrapper" id="main-content-wrapper">
+        <div class="main-content-wrapper expanded" id="main-content-wrapper">
             <header class="navbar">
                 <div class="navbar-left">
-                    <button class="toggle-sidebar-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                    <button class="toggle-sidebar-btn" id="toggleSidebarBtn"><i class="fas fa-bars"></i></button>
                     <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
                 </div>
                 <div class="navbar-right">
-                    <span class="user-info">Hola, {{ request.user.persona }}!</span> {# Puedes mostrar el nombre del usuario logueado aquí #}
+                    <span class="user-info">Hola, {{ request.user.username }}!</span> {# Puedes mostrar el nombre del usuario logueado aquí #}
                     <div class="user-avatar">
-                        <i class="fas fa-user-circle"></i>
+                        <a href="{% url 'perfil_usuario' %}">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
                     </div>
                 </div>
+
+
             </header>
 
             <main class="content-area">
@@ -76,12 +80,16 @@
     </div>
 
     <script>
-        function toggleSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var mainContentWrapper = document.getElementById('main-content-wrapper');
-            sidebar.classList.toggle('collapsed');
-            mainContentWrapper.classList.toggle('expanded');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+            const mainContentWrapper = document.getElementById('main-content-wrapper');
+
+            toggleSidebarBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContentWrapper.classList.toggle('expanded');
+            });
+        });
     </script>
     {% block extra_js %}{% endblock %} {# Para JS adicional de plantillas hijas #}
 </body>

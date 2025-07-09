@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+
+<div class="perfil-container">
+  <h2>Mi Perfil</h2>
+
+  <div class="perfil-info">
+    <img src="{% if persona.imagen %}{{ persona.imagen.url }}{% else %}{% static 'img/usuarios_pre.png' %}{% endif %}" alt="Foto de perfil" class="perfil-foto">
+
+    <ul>
+      <li><strong>Nombre:</strong> {{ persona.nombre }}</li>
+      <li><strong>Apellido:</strong> {{ persona.apellido }}</li>
+      <li><strong>Teléfono:</strong> {{ persona.telefono }}</li>
+      <li><strong>Email:</strong> {{ persona.email }}</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

@@ -24,6 +24,13 @@ def persona(request):
 
 login_required
 
+
+@login_required
+def perfil_usuario(request):
+    persona = request.user.persona
+    return render(request, 'perfil.html', {'persona': persona})
+
+#region usuario
 # crear_usuario
 def crear_usuario(request):
     if request.method == 'POST':
@@ -113,7 +120,9 @@ def crear_persona(request, eps_id):
         'eps': eps
     })
 
-
+def detalle_persona(request, pk):
+    persona = get_object_or_404(Persona, pk=pk)
+    return render(request, 'persona/detalle_persona.html', {'persona': persona})
 
 # listar persona
 def listar_personas(request):

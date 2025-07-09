@@ -59,8 +59,13 @@ urlpatterns = [
     path('eliminar_eps/<int:eps_id>/', views.eliminar_eps, name='eliminar_eps'),
 
     # region Rutas para Persona
+
+    path('perfil/', views.perfil_usuario, name='perfil_usuario'),
+
+
     path('crear_persona/', views.crear_persona, name='crear_persona'),
     path('listar_personas/', views.listar_personas, name='listar_personas'),
+    path('persona/<int:pk>/', views.detalle_persona, name='detalle_persona'),
     path('actualizar_persona/<int:persona_id>/', views.actualizar_persona, name='actualizar_persona'),
     path('desactivar_persona/<int:persona_id>/', views.desactivar_persona, name='desactivar_persona'),
     path('personas/inactivas/', views.listar_personas_inactivas, name='listar_personas_inactivas'),
