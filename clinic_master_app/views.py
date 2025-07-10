@@ -3,9 +3,9 @@ from .models import *
 from .forms import *
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-#region Inicio
+from django.db.models import Q
 
-from django.shortcuts import render
+#region Inicio
 
 def inicio_view(request):
     return render(request, "inicio.html")
@@ -14,21 +14,35 @@ def inicio_view(request):
 def home(request):
     return render(request, 'home.html') 
 def medico(request):
-    return render(request, 'medico.html') 
+    return render(request, 'home_persona.html') 
 def auxiliar(request):
-    return render(request, 'auxiliar.html') 
+    return render(request, 'home.html') 
+
 @login_required
 def persona(request):
-    empleado = request.user.empleado  # accede al empleado desde el usuario logueado
+    try:
+        empleado = request.user.empleado
+    except Empleado.DoesNotExist:
+        empleado = None  # o redirecciona o muestra mensaje
     return render(request, 'persona.html', {'empleado': empleado})
 
+
 login_required
+
+@login_required
+def home_persona(request):
+    return render(request, 'home_persona.html')
 
 
 @login_required
 def perfil_usuario(request):
     persona = request.user.persona
     return render(request, 'perfil.html', {'persona': persona})
+
+@login_required
+def perfil_persona(request):
+    persona = request.user.persona
+    return render(request, 'perfil_persona.html', {'persona': persona})
 
 #region usuario
 # crear_usuario
@@ -41,11 +55,24 @@ def crear_usuario(request):
     else:
         form = UsuarioForm()
 
-    return render(request, 'usuario/crear_usuario.html', {'form': form})
+    return render(request, 'usuario/crear_usuario.html', {
+    'form': form,
+    'current_step_number': 3
+})
 
-# listar_usuarios
 def listar_usuarios(request):
-    usuarios = Usuario.objects.all()  # Obtiene todos los usuarios
+    query = request.GET.get('q') # Obtener el término de búsqueda de la URL
+
+    if query:
+        # Si hay un término de búsqueda, filtramos los usuarios
+        # Directamente por el campo 'username'
+        usuarios = Usuario.objects.filter(
+            Q(username__icontains=query) # Busca en el campo 'username'
+        ).distinct()
+    else:
+        # Si no hay término de búsqueda, obtener todos los usuarios
+        usuarios = Usuario.objects.all()
+
     return render(request, 'usuario/listar_usuarios.html', {'usuarios': usuarios})
 
 # eliminar usuario
@@ -82,10 +109,12 @@ def login_view(request):
             if user.puesto_empresa == "it":
                 return redirect("persona")
             elif user.puesto_empresa == "medico":
-                return redirect("persona")
+                return redirect("pesona")
             elif user.puesto_empresa == "persona":
                 return redirect("persona")
             elif user.puesto_empresa == "auxiliar":
+                return redirect("home")
+            elif user.puesto_empresa == "administrador":
                 return redirect("home")
             else:
                 return redirect("persona") # Redirección por defecto
@@ -117,17 +146,36 @@ def crear_persona(request, eps_id):
         form = PersonaForm()
     return render(request, 'persona/crear_persona.html', {
         'form': form,
-        'eps': eps
+        'eps': eps,
+        'current_step_number': 1
     })
 
 def detalle_persona(request, pk):
     persona = get_object_or_404(Persona, pk=pk)
-    return render(request, 'persona/detalle_persona.html', {'persona': persona})
+    empleado = Empleado.objects.filter(id_persona=persona).first()  # Relación con Empleado
+
+    return render(request, 'persona/detalle_persona.html', {
+        'persona': persona,
+        'empleado': empleado
+    })
+
 
 # listar persona
 def listar_personas(request):
-    persona = Persona.objects.filter(is_active=True)
-    return render(request, 'persona/listar_personas.html', {'persona_list':persona})
+    query = request.GET.get('q')
+
+    if query:
+        persona_list = Persona.objects.filter(
+            is_active=True
+        ).filter(
+            Q(num_doc__icontains=query) | # CAMBIADO: Usar 'num_doc' en lugar de 'documento'
+            Q(nombre__icontains=query) |
+            Q(apellido__icontains=query)
+        ).distinct()
+    else:
+        persona_list = Persona.objects.filter(is_active=True)
+
+    return render(request, 'persona/listar_personas.html', {'persona_list': persona_list})
 
 # reactivar usuarios
 def reactivar_persona(request, id):
@@ -143,9 +191,22 @@ def desactivar_persona(request, persona_id):
     persona.save()
     return redirect('listar_personas_inactivas')
 
-# listar personas inactivas
 def listar_personas_inactivas(request):
+    query = request.GET.get('q') # Get the search term from the URL (from your HTML input named 'q')
+
+    # Start by filtering for all inactive persons. This is the base set.
     personas_inactivas = Persona.objects.filter(is_active=False)
+
+    if query:
+        # If there's a search term, further filter the already inactive persons
+        # using the 'num_doc' field (or 'username' if that's what you intended)
+        personas_inactivas = personas_inactivas.filter(
+            Q(num_doc__icontains=query) # Filters by document number (case-insensitive)
+            # If you also want to search by other fields, you can add them with OR (Q objects):
+            # | Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        ).distinct() # Use .distinct() to avoid duplicate results if a person matches multiple search criteria
+
+    # Pass the filtered (and potentially searched) list of inactive people to the template
     return render(request, 'persona/listar_personas_inactivas.html', {'personas_inactivas': personas_inactivas})
 
 
@@ -294,7 +355,7 @@ def actualizar_formacion(request, formacion_id):
 def eliminar_formacion(request, formacion_id):
     formacion = get_object_or_404(Formacion, id=formacion_id)
     formacion.delete()
-    return redirect('listar_formaciones')
+    return redirect('listar_formacion')
 #region empleado
 
 def crear_empleado(request, persona_id):
@@ -310,13 +371,27 @@ def crear_empleado(request, persona_id):
         form = EmpleadoForm()
     return render(request, 'empleado/crear_empleado.html', {
         'form': form,
-        'persona': persona
+        'persona': persona,
+        'current_step_number': 2
     })
 
 
 
 def listar_empleados(request):
-    empleados = Empleado.objects.all()
+    query = request.GET.get('q') # Obtener el término de búsqueda de la URL
+
+    if query:
+        # Si hay un término de búsqueda, filtramos los empleados
+        # Acceder a los campos de Persona a través de la relación 'id_persona'
+        empleados = Empleado.objects.filter(
+            Q(id_persona__num_doc__icontains=query) | # Accede a num_doc de la Persona relacionada
+            Q(id_persona__nombre__icontains=query) | # Accede a nombre de la Persona relacionada
+            Q(id_persona__apellido__icontains=query) # Accede a apellido de la Persona relacionada
+        ).distinct()
+    else:
+        # Si no hay término de búsqueda, obtener todos los empleados
+        empleados = Empleado.objects.all()
+
     return render(request, 'empleado/listar_empleados.html', {'empleados': empleados})
 
 def actualizar_empleado(request, empleado_id):
@@ -403,42 +478,6 @@ def crear_movimiento(request):
 def listar_movimientos(request):
     movimientos = HistorialMovimientos.objects.all()
     return render(request, 'historial_movimiento/listar_movimientos.html', {'movimientos': movimientos})
-
-# region realacion jerarquica
-# crear_relacion_jerarquica
-def crear_relacion_jerarquica(request):
-    if request.method == 'POST':
-        form = RelacionJerarquicaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_relaciones_jerarquicas')
-    else:
-        form = RelacionJerarquicaForm()
-    return render(request, 'relacion_jerarquica/crear_relacion_jerarquica.html', {'form': form})
-
-# listar_relaciones_jerarquicas
-def listar_relaciones_jerarquicas(request):
-    relaciones = RelacionesJerarquicas.objects.all()
-    return render(request, 'relacion_jerarquica/listar_relaciones.html', {'relaciones': relaciones})
-
-# eliminar_relacion_jerarquica
-def eliminar_relacion_jerarquica(request, relacion_id):
-    relacion = get_object_or_404(RelacionesJerarquicas, id=relacion_id)
-    relacion.delete()
-    return redirect('listar_relaciones_jerarquicas')
-
-def editar_relacion_jerarquica(request, pk):
-    relacion = get_object_or_404(RelacionesJerarquicas, pk=pk)
-
-    if request.method == 'POST':
-        form = RelacionJerarquicaForm(request.POST, instance=relacion)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_relaciones_jerarquicas')
-    else:
-        form = RelacionJerarquicaForm(instance=relacion)
-
-    return render(request, 'relacion_jerarquica/editar_relacion_jerarquica.html', {'form': form})
 
 
 # region cargos
@@ -530,4 +569,3 @@ def crear_usuario_final(request, persona_id):
         'form': form,
         'persona': persona
     })
-

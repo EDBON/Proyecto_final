@@ -5,23 +5,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clinic Master</title>
+  <title>Meditek</title>
   <link rel="shortcut icon" href="{% static 'images/logo.png' %}">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <header class="main-header">
-    <img class="logo" src="{% static 'images/logo-claro.png' %}" alt="">
+    <img class="logo" src="{% static 'images/logo.png' %}" alt="">
     <nav>
       <ul>
-        <li><a class="transition" href="">Sobre nosotros</a></li>
-        <li><a class="transition" href="">Biblioteca de la Salud</a></li>
-        <li><a class="transition" href="">Contactanos</a></li>
-        <li><a class="transition" href="">Investigación</a></li>
+        <li><a class="transition" href="#conocenos">Conocenos</a></li>
+        <li><a class="transition" href="#sobre_nosotros">Sobre nosotros</a></li>
+        <li><a class="transition" href="#contactanos">Contactanos</a></li>
         <li><a class="transition" href="{% url 'login' %}"><svg xmlns="http://www.w3.org/2000/svg" 
-            width="30" 
-            height="30" 
+            width="20" 
+            height="20" 
             fill="currentColor"
             viewBox="0 0 16 16" 
             style="vertical-align: middle; margin-right: 5px;">
@@ -38,15 +37,14 @@
     <div class="overlay">
       <h1>Transformar el cuidado de tu salud</h1>
       <div class="buttons">
-        <a href="{% url 'innovacion' %}" class="btn">Cómo impulsamos la innovación</a>
-        <a href="#" class="slide-button">Pide una cita</a>
+        <h2><a class="btn" style="cursor: default;">Meditek es la solución tecnológica que transforma la forma en que las instituciones de salud gestionan su personal, procesos y servicios clínicos.</a></h2>
       </div>
     </div>
   </section>
   <div class="main-content" id="main-content">
     <!-- Contenedor de Talento Humano -->
     <div class="content-container">
-      <h2>Conoce a Nuestro Talento Humano</h2>
+      <h2 id="conocenos">Conoce a Nuestro Talento Humano</h2>
 
       <!-- Contenedor de tarjetas -->
       <div class="card-container">
@@ -82,13 +80,109 @@
       </div>
     </div>
   </div>
+
+      <section class="rrhh-section" id="sobre_nosotros">
+        <div class="rrhh-content">
+            <div class="rrhh-images">
+                <div class="rrhh-image-top-left">
+                    <img src="{% static 'images/docs1.jpg' %}" alt="Doctores Image 1">
+                </div>
+                <div class="rrhh-image-top-right">
+                    <img src="{% static 'images/docs4.jpg' %}" alt="Doctores Image 2">
+                </div>
+                <div class="rrhh-image-bottom-left">
+                    <img src="{% static 'images/docs3.jpg' %}" alt="Doctores Image 3">
+                </div>
+                <div class="rrhh-image-bottom-right">
+                    <img src="{% static 'images/docs2.jpg' %}" alt="Doctores Image 4">
+                </div>
+            </div>
+            <div class="rrhh-text-content">
+                <h2>Gestión integral del talento humano en salud con Meditek</h2>
+                <p>Meditek es una solución tecnológica avanzada diseñada para optimizar la administración del personal en instituciones de salud. Permite gestionar de forma centralizada los datos de empleados, historiales laborales, contratos, formaciones y relaciones jerárquicas. Con Meditek, garantizas procesos más ágiles, cumplimiento normativo y un control eficiente del recurso humano.</p>
+            </div>
+        </div>
+    </section>
+    <section class="contact-hero" id="contactanos">
+        <div class="contact-overlay">
+            <p class="contact-subtitle">¡Nos encantaría escuchar de ti!</p>
+            <h1 class="contact-title">CONTÁCTANOS</h1>
+            <p class="contact-description">¡Estamos aquí para ayudarte!</p>
+        </div>
+    </section>
+
+    <section class="contact-content">
+        <div class="contact-columns">
+
+          <!-- Columna izquierda: Info -->
+          <div class="contact-info">
+
+            <div class="info-block">
+              <h3>CORREO ELECTRÓNICO</h3>
+              <p>info@meditek.com</p>
+            </div>
+
+            <div class="info-block">
+              <h3>TELÉFONO</h3>
+              <p>+57 914 452 141</p>
+            </div>
+
+            <div class="info-block">
+              <h3>DIRECCIÓN</h3>
+              <p>Cl. 13 #9 - 85, Soacha, Cundinamarca</p>
+            </div>
+
+          </div>
+
+          <!-- Columna derecha: Mapa -->
+          <div class="map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15908.23419179031!2d-74.21591232491454!3d4.583511701325739!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f757dc4a2bf43%3A0x1d66739de34e5150!2sHMGY%20Consulta%20Externa!5e0!3m2!1ses-419!2sco!4v1752135589967!5m2!1ses-419!2sco" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+        <div class="contact-forms-outer-wrapper">
+      <div class="contact-forms-container">
+          <div class="form-section">
+              <h3>INDIVIDUOS Y FAMILIAS</h3>
+              <p>Si está buscando obtener información sobre nuestros servicios utilice el formulario a continuación para contactarnos.</p>
+                <form action="#" method="POST">
+                    <label for="nombre_ind">Nombre (requerido)</label>
+                    <input type="text" id="nombre_ind" name="nombre_ind" required>
+
+                    <label for="email_ind">Dirección de correo electrónico (requerido)</label>
+                    <input type="email" id="email_ind" name="email_ind" required>
+
+                    <label for="telefono_ind">Teléfono</label>
+                    <input type="tel" id="telefono_ind" name="telefono_ind">
+
+                    <label for="mensaje_ind">Mensaje</label>
+                    <textarea id="mensaje_ind" name="mensaje_ind" rows="5"></textarea>
+
+                    <label for="copia_ind">Copia a su buzón de entrada</label>
+                    <input type="checkbox" id="copia_ind" name="copia_ind">
+
+                    <button type="submit" class="submit-btn">ENVIAR</button>
+                </form>
+            </div>
+            <div class="form-section">
+          </div>
+        </div>
+      </div>
+    </section>
   <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <!-- Logo -->
             <div class="footer-section">
                 <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo" class="footer-logo">
-                <p>© 2024 Clinic Master. Todos los derechos reservados.</p>
+                <p>© 2024 Meditek. Todos los derechos reservados.</p>
             </div>
 
             <!-- Información de contacto -->

@@ -1,38 +1,77 @@
 {% extends 'base.html' %}
 
-{% block title %} Clinic Master{% endblock %} {# Título más específico #}
+{% load static %}
 
-{% block page_title %}Talento Humano{% endblock %} {# Título que aparecerá en el navbar superior #}
+{% block title %}Inicio - Meditek{% endblock %}
+
+{% block page_title %}Bienvenido{% endblock %} {# Título más amigable para el dashboard logueado #}
 
 {% block content %}
 <div class="dashboard-section">
-    <h2>Conoce a Nuestro Talento Humano</h2>
+    <div class="user-profile-box">
+        {% if request.user.persona.imagen %}
+            <img src="{{ request.user.persona.imagen.url }}" alt="Foto de perfil" class="profile-picture">
+        {% else %}
+            <img src="{% static 'img/usuarios_pre.png' %}" alt="Foto por defecto" class="profile-picture">
+        {% endif %}
+        <h2>¡Hola, {{ request.user.persona.nombre }}! ¿Qué haremos hoy?</h2>
+    </div>
+    <div class="card-grid">
+        {# Tarjeta para Personas #}
+        <a href="{% url 'listar_personas' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-user-friends"></i></div>
+                <h3>Gestión de Personas</h3>
+                <p>Crea, edita y visualiza toda la información de las personas.</p>
+            </div>
+        </a>
 
-    <div class="card-grid"> {# Cambiado a card-grid para flexbox/grid #}
+        {# Tarjeta para Usuarios #}
+        <a href="{% url 'listar_usuarios' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+                <h3>Administración de Usuarios</h3>
+                <p>Gestiona los accesos y roles de los usuarios del sistema.</p>
+            </div>
+        </a>
 
-        <div class="dashboard-card"> {# Cambiado a dashboard-card #}
-            <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
-            <h3>Desarrollo Profesional</h3>
-            <p>Ofrecemos formación continua a nuestros empleados para garantizar su crecimiento y actualización en sus áreas de especialización.</p>
-        </div>
+        {# Tarjeta para Empleados #}
+        <a href="{% url 'listar_empleados' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>Directorio de Empleados</h3>
+                <p>Explora la información detallada de cada empleado de la IPS.</p>
+            </div>
+        </a>
 
-        <div class="dashboard-card">
-            <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
-            <h3>Bienestar y Calidad de Vida</h3>
-            <p>Promovemos un entorno de trabajo saludable con programas de bienestar, seguros de salud y más beneficios para nuestros empleados.</p>
-        </div>
+        {# Tarjeta para Contratos #}
+        <a href="{% url 'listar_contratos' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-file-contract"></i></div>
+                <h3>Contratos Laborales</h3>
+                <p>Revisa y administra todos los contratos de tu equipo.</p>
+            </div>
+        </a>
 
-        <div class="dashboard-card">
-            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-            <h3>Oportunidades de Crecimiento</h3>
-            <p>Brindamos oportunidades de ascenso y desarrollo profesional dentro de nuestra IPS, apoyando el avance de cada uno de nuestros colaboradores.</p>
-        </div>
+        {# Tarjeta para Cargos #}
+        <a href="{% url 'listar_cargos' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+                <h3>Configuración de Cargos</h3>
+                <p>Define y gestiona los diferentes cargos de la organización.</p>
+            </div>
+        </a>
+        
+        {# Tarjeta para Personas Inactivas #}
+        <a href="{% url 'listar_personas_inactivas' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-user-slash"></i></div>
+                <h3>Personas Inactivas</h3>
+                <p>Visualiza y gestiona las personas que ya no están activas en el sistema.</p>
+            </div>
+        </a>
 
-        <div class="dashboard-card">
-            <div class="card-icon"><i class="fas fa-users"></i></div>
-            <h3>Nuestro Equipo</h3>
-            <p>Contamos con un equipo multidisciplinario de profesionales altamente capacitados en diferentes áreas de la salud.</p>
-        </div>
+        {# Puedes añadir más tarjetas según las funcionalidades que necesites destacar #}
 
     </div>
 </div>

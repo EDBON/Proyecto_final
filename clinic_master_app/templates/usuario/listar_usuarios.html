@@ -2,12 +2,20 @@
 {% load static %}
 
 {% block content %}
-    <!-- Enlazamos el CSS para listar dentro del bloque contenido -->
-    <link rel="stylesheet" href="{% static 'css/listar.css' %}">
+<!-- Enlazamos el CSS para listar dentro del bloque contenido -->
+<link rel="stylesheet" href="{% static 'css/listar.css' %}">
 
-    <div class="content-container">
-        <h2>Lista de Usuarios</h2>
-        <div class="table-responsive">
+<div class="content-container">
+    <h2>Lista de Usuarios</h2>
+    <div class="search-bar-container">
+        <form action="{% url 'listar_usuarios' %}" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Buscar por documento..." value="{{ request.GET.q }}">
+            <button type="submit" class="search-btn">Buscar</button>
+            <a href="{% url 'crear_usuario' %}" class="btn-view">Crear un nuevo usuario</a>
+        </form>
+    </div>
+    <hr>
+    <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -22,8 +30,8 @@
                         <td>{{ usuario.username }}</td>
                         <td>{{ usuario.empleado }}</td>
                         <td>
-                            <a href="{% url 'actualizar_usuario' usuario.id %}" class="btn btn-warning btn-sm">Editar</a> |
-                            <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">Eliminar</a>
+                            <a href="{% url 'actualizar_usuario' usuario.id %}" class="btn-edit">Editar</a> |
+                            <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn-des" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">Eliminar</a>
                         </td>
                     </tr>
                     {% empty %}
@@ -35,6 +43,5 @@
             </table>
         </div>
         <br>
-        <a href="{% url 'crear_usuario' %}" class="btn btn-primary">Crear un nuevo usuario</a>
     </div>
 {% endblock %}

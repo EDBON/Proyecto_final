@@ -1,0 +1,250 @@
+/* detalle_perfil.css */
+
+/* Contenedor principal del perfil */
+.perfil-wrapper {
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para apilar la barra superior y el contenido */
+    background-color: var(--white); /* Fondo blanco para la tarjeta principal */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--card-shadow);
+    max-width: 900px; /* Ancho máximo para el contenedor del perfil */
+    margin: 40px auto; /* Centrar el contenedor en la página con margen superior e inferior */
+    overflow: hidden; /* Asegurar que los bordes redondeados se apliquen correctamente */
+}
+
+/* Barra superior (nueva sección) */
+.perfil-top-bar {
+    background-color: var(--primary-blue); /* Color de la barra superior */
+    height: 80px; /* Altura de la barra */
+    width: 100%;
+    /* No hay contenido directo aquí, es solo una barra de color */
+}
+
+/* Contenido principal del perfil (foto, nombre, información) */
+.perfil-content {
+    display: flex; /* Para colocar foto/nombre e información lado a lado */
+    align-items: flex-start; /* Alinea elementos al inicio del eje cruzado (arriba) */
+    padding: 30px 40px; /* Padding interno para el contenido */
+    position: relative; /* Para la posición absoluta de la foto */
+    margin-top: -60px; /* Mueve el contenido hacia arriba para solaparse con la barra superior */
+}
+
+/* Sección izquierda para la imagen y el nombre */
+.perfil-izquierda {
+    display: flex;
+    flex-direction: column; /* Para apilar foto y nombre */
+    align-items: center; /* Centra la foto y el nombre horizontalmente */
+    width: 200px; /* Ancho fijo para esta columna */
+    flex-shrink: 0; /* Evita que esta sección se encoja */
+    margin-right: 40px; /* Espacio a la derecha de la foto/nombre */
+}
+
+.foto-circular {
+    width: 150px; /* Tamaño de la imagen */
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--white); /* Borde blanco alrededor de la imagen */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para la imagen */
+    background-color: #f0f0f0; /* Color de fondo si no hay imagen */
+    z-index: 10; /* Asegura que la imagen esté sobre el fondo */
+    margin-bottom: 15px; /* Espacio entre la foto y el nombre */
+}
+
+/* Estilos para el nombre debajo de la foto */
+.perfil-izquierda h3 { /* Aplicado a h3 ya que es el que contiene el nombre */
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8rem;
+    color: var(--text-color-dark);
+    margin-top: 0;
+    margin-bottom: 0; /* Elimina margen inferior extra */
+    font-weight: 600; /* Un poco más de peso para el nombre */
+    text-align: center;
+}
+
+/* Sección derecha para la información */
+.perfil-derecha {
+    flex-grow: 1; /* Permite que ocupe el espacio restante */
+    padding-left: 20px; /* Pequeño padding si es necesario por alineación */
+}
+
+.perfil-derecha h1 { /* "¡Hola!" */
+    font-family: 'Georgia', serif; /* Tipo de letra más elegante para el saludo */
+    font-size: 2.5rem; /* Tamaño grande para el saludo */
+    color: #5C4F42; /* Un tono marrón oscuro para el saludo */
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.perfil-derecha p {
+    font-size: 1.1rem;
+    color: var(--text-color-dark);
+    margin-bottom: 8px; /* Menor margen para líneas más compactas */
+    line-height: 1.5;
+}
+
+.perfil-derecha p strong {
+    color: var(--primary-blue); /* Resaltar las etiquetas con el color azul primario */
+    min-width: 120px; /* Asegura un ancho mínimo para las etiquetas y ayuda a alinear */
+    display: inline-block; /* Para que min-width funcione */
+}
+
+/* Estilos para los botones */
+.botones-perfil {
+    display: flex;
+    justify-content: flex-start; /* Alinea los botones al inicio de la sección */
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 40px; /* Espacio superior para separar de la información */
+    padding-left: 20px; /* Alinea con el contenido de la derecha si es necesario */
+}
+
+.btn-circular {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px;
+    border-radius: 30px; /* Bordes más redondeados para un aspecto "circular" */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-circular.azul {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.btn-circular.azul:hover {
+    background-color: var(--dark-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-circular.naranja {
+    background-color: #FF8C42; /* Un naranja vibrante */
+    color: var(--white);
+}
+
+.btn-circular.naranja:hover {
+    background-color: #E67A3B;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-circular.rosa {
+    background-color: #E91E63; /* Un rosa fuerte */
+    color: var(--white);
+}
+
+.btn-circular.rosa:hover {
+    background-color: #C2185B;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .perfil-wrapper {
+        margin: 20px auto;
+    }
+
+    .perfil-content {
+        flex-direction: column; /* Apilar la foto/nombre y la información */
+        align-items: center; /* Centrar todo el contenido */
+        padding: 20px;
+        margin-top: -75px; /* Ajustar el solapamiento */
+    }
+
+    .perfil-izquierda {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        margin-right: 0; /* Eliminar margen derecho */
+        margin-bottom: 20px; /* Espacio debajo de la sección de la foto */
+    }
+
+    .foto-circular {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px; /* Reducir margen */
+    }
+
+    .perfil-izquierda h3 {
+        font-size: 1.5rem;
+    }
+
+    .perfil-derecha {
+        padding-left: 0; /* Eliminar padding */
+        text-align: center; /* Centrar el texto de la derecha */
+    }
+
+    .perfil-derecha h1 {
+        font-size: 2rem;
+        margin-top: 15px; /* Espacio superior para el saludo */
+        margin-bottom: 15px;
+    }
+
+    .perfil-derecha p {
+        font-size: 1rem;
+    }
+
+    .perfil-derecha p strong {
+        display: block; /* Para que la etiqueta y el valor queden en líneas separadas */
+        min-width: unset; /* Reiniciar min-width */
+        margin-bottom: 5px; /* Espacio entre etiqueta y valor */
+    }
+
+    .botones-perfil {
+        flex-direction: column; /* Apilar botones */
+        gap: 15px;
+        margin-top: 30px;
+        padding-left: 0; /* Eliminar padding */
+        align-items: center; /* Centrar botones apilados */
+    }
+
+    .btn-circular {
+        width: 80%; /* Ocupar más ancho */
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-wrapper {
+        margin: 15px auto;
+        border-radius: 8px;
+    }
+
+    .perfil-top-bar {
+        height: 60px;
+    }
+
+    .perfil-content {
+        padding: 15px;
+        margin-top: -60px; /* Ajuste para pantallas más pequeñas */
+    }
+
+    .foto-circular {
+        width: 100px;
+        height: 100px;
+        border-width: 3px;
+    }
+
+    .perfil-izquierda h3 {
+        font-size: 1.2rem;
+    }
+
+    .perfil-derecha h1 {
+        font-size: 1.8rem;
+    }
+
+    .perfil-derecha p {
+        font-size: 0.9rem;
+    }
+
+    .btn-circular {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}

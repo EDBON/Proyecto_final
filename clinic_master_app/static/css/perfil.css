@@ -1,23 +1,351 @@
-.perfil-container {
-  max-width: 800px;
-  margin: 40px auto;
-  background-color: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  color: #333;
+/* perfil.css */
+
+/* Import a font similar to the template (e.g., Lato, Open Sans, Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Or if you prefer a more display-like font for titles, consider something like Poppins */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap'); */
+
+:root {
+    /* Assuming these are defined in your base CSS, adjust if not */
+    --primary-blue: #2F80ED;
+    --dark-blue: #266bbd;
+    --text-color-dark: #333333;
+    --text-color-light: #828282;
+    --border-color: #E0E0E0;
+    --background-grey: #F8F8F8;
+    --white: #FFFFFF;
+    --card-shadow: rgba(0, 0, 0, 0.05);
+
+    /* New colors inspired by the Persona Profile template */
+    --template-dark-blue: #1A3E5C; /* Main banner background */
+    --template-orange: #FFAB2E; /* Accent color for circles and text */
+    --template-light-grey: #F5F5F5; /* Background for content sections */
 }
 
-.perfil-info {
-  display: flex;
-  align-items: center;
-  gap: 30px;
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-grey); /* Or a lighter grey if you prefer */
+    color: var(--text-color-dark);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* -------------------- Header Banner -------------------- */
+.perfil-header-banner {
+    background-color: var(--template-dark-blue);
+    position: relative;
+    padding: 60px 0; /* Vertical padding */
+    color: var(--white);
+    text-align: center;
+    overflow: hidden; /* Hide overflowing background elements */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-header-content {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2; /* Ensure content is above background patterns */
+}
+
+.perfil-header-icon {
+    font-size: 3rem; /* Size of the user icon */
+    color: var(--template-orange);
+    margin-bottom: 15px;
+}
+
+.perfil-main-title {
+    font-family: 'Inter', sans-serif; /* Or 'Poppins' if imported */
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    letter-spacing: -1px;
+}
+
+.perfil-main-title span { /* For specific colored words like 'Profile' */
+    color: var(--template-orange);
+}
+
+.perfil-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 0;
+    font-weight: 400;
+}
+
+/* Background Patterns (Circles and Crosses) */
+.perfil-header-banner::before,
+.perfil-header-banner::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Large top-left circle */
+.perfil-header-banner::before {
+    width: 250px;
+    height: 250px;
+    background-color: var(--template-orange);
+    top: -100px;
+    left: -80px;
+    opacity: 0.3;
+}
+
+/* Smaller bottom-right circle */
+.perfil-header-banner::after {
+    width: 150px;
+    height: 150px;
+    background-color: var(--template-orange);
+    bottom: -70px;
+    right: -50px;
+    opacity: 0.2;
+}
+
+/* Cross patterns (using pseudo-elements for simplicity) */
+.perfil-header-banner .perfil-header-content::before,
+.perfil-header-banner .perfil-header-content::after {
+    content: '✖'; /* Unicode multiplication sign for a simple cross */
+    position: absolute;
+    color: var(--template-orange);
+    font-size: 2.5rem;
+    opacity: 0.6;
+    z-index: 0; /* Behind text but above banner background */
+}
+
+.perfil-header-banner .perfil-header-content::before { /* Top-right cross */
+    top: 20px;
+    right: 50px;
+    transform: rotate(45deg);
+}
+
+.perfil-header-banner .perfil-header-content::after { /* Bottom-left cross */
+    bottom: 20px;
+    left: 50px;
+    transform: rotate(45deg);
+}
+
+
+/* -------------------- Main Content Container -------------------- */
+.perfil-container {
+    max-width: 900px;
+    margin: -60px auto 40px auto; /* Pulls container up to overlap banner */
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow for floating effect */
+    padding: 30px;
+    position: relative;
+    z-index: 5; /* Ensure it's above the banner */
+}
+
+.perfil-section {
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color); /* Underline effect */
+    display: flex;
+    align-items: center;
+}
+
+.section-title::before {
+    content: '▶'; /* Play icon as a bullet point */
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+    margin-right: 10px;
+}
+
+.section-description {
+    font-size: 1rem;
+    color: var(--text-color-light);
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+/* -------------------- Profile Info (Photo and Details) -------------------- */
+.perfil-main-content {
+    display: flex;
+    align-items: flex-start; /* Align photo and text at the top */
+    gap: 30px; /* Space between photo and details */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.perfil-photo-wrapper {
+    flex-shrink: 0; /* Prevent shrinking */
+    width: 200px; /* Fixed width for the image container */
+    height: 200px;
+    border-radius: 8px; /* Slightly rounded corners for the image container */
+    overflow: hidden; /* Ensure image respects border-radius */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--template-light-grey); /* Placeholder background */
 }
 
 .perfil-foto {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #004080;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crop image to fit */
+    display: block; /* Remove extra space below image */
+}
+
+.perfil-details {
+    flex-grow: 1; /* Allow details to take remaining space */
+    min-width: 280px; /* Minimum width before wrapping */
+}
+
+.perfil-name {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.perfil-list {
+    list-style: none; /* Remove default list bullets */
+    padding: 0;
+    margin: 0;
+}
+
+.perfil-list li {
+    font-size: 1.1rem;
+    color: var(--text-color-dark);
+    margin-bottom: 8px; /* Space between list items */
+}
+
+.perfil-list li strong {
+    color: var(--primary-blue); /* Highlight labels */
+    display: inline-block; /* Allows setting min-width */
+    min-width: 120px; /* Aligns values vertically */
+}
+
+/* -------------------- Responsive Adjustments -------------------- */
+@media (max-width: 768px) {
+    .perfil-header-banner {
+        padding: 40px 0;
+    }
+
+    .perfil-main-title {
+        font-size: 2.5rem;
+    }
+
+    .perfil-subtitle {
+        font-size: 1rem;
+    }
+
+    .perfil-header-banner::before { /* Adjust background circles */
+        width: 180px;
+        height: 180px;
+        top: -70px;
+        left: -60px;
+    }
+    .perfil-header-banner::after {
+        width: 120px;
+        height: 120px;
+        bottom: -50px;
+        right: -40px;
+    }
+    .perfil-header-banner .perfil-header-content::before,
+    .perfil-header-banner .perfil-header-content::after {
+        font-size: 2rem;
+    }
+
+    .perfil-container {
+        margin: -40px auto 20px auto;
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .perfil-main-content {
+        flex-direction: column; /* Stack photo and details */
+        align-items: center; /* Center them */
+        gap: 20px;
+    }
+
+    .perfil-photo-wrapper {
+        width: 150px;
+        height: 150px;
+    }
+
+    .perfil-name {
+        font-size: 1.8rem;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .perfil-list li {
+        font-size: 1rem;
+    }
+
+    .perfil-list li strong {
+        min-width: unset; /* Remove min-width */
+        display: block; /* Stack label and value */
+        margin-bottom: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-header-banner {
+        padding: 30px 0;
+    }
+
+    .perfil-header-icon {
+        font-size: 2.5rem;
+    }
+
+    .perfil-main-title {
+        font-size: 2rem;
+    }
+
+    .perfil-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .perfil-header-banner::before {
+        width: 120px;
+        height: 120px;
+        top: -50px;
+        left: -40px;
+    }
+    .perfil-header-banner::after {
+        width: 80px;
+        height: 80px;
+        bottom: -30px;
+        right: -30px;
+    }
+    .perfil-header-banner .perfil-header-content::before,
+    .perfil-header-banner .perfil-header-content::after {
+        font-size: 1.8rem;
+    }
+
+    .perfil-container {
+        margin: -30px auto 15px auto;
+        padding: 15px;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .perfil-photo-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+
+    .perfil-name {
+        font-size: 1.5rem;
+    }
+
+    .perfil-list li {
+        font-size: 0.9rem;
+    }
 }

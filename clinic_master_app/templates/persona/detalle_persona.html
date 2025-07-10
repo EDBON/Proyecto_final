@@ -1,26 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Detalle de Persona{% endblock %}
+{% block title %}Mi Perfil{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/detalle_perfil.css' %}">
+{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/detalle.css' %}">
+<div class="perfil-wrapper">
+    <div class="perfil-top-bar"></div> {# This is the new top bar div #}
 
-<div class="detalle-container">
-    <h2>Detalle de {{ persona.nombre }} {{ persona.apellido }}</h2>
+    <div class="perfil-content"> {# New wrapper for photo/name and info #}
+        <div class="perfil-izquierda">
+            <img src="{% if persona.imagen %}{{ persona.imagen.url }}{% else %}{% static 'img/usuarios_pre.png' %}{% endif %}" alt="Foto de perfil" class="foto-circular">
+            <h2>{{ persona.nombre }} {{ persona.apellido }}</h2>
+        </div>
+        <div class="perfil-derecha">
+            <h1>Perfil</h1>
+            {# Removed name from here as it's now under the photo #}
+            <p><strong>Tipo doc:</strong> {{ persona.tipo_doc }} {{ persona.num_doc }}</p>
+            <p><strong>Fecha nac:</strong> {{ persona.fecha_nac }}</p>
+            <p><strong>Género:</strong> {{ persona.genero }}</p>
+            <p><strong>Dirección:</strong> {{ persona.direccion }}</p>
+            <p><strong>Teléfono:</strong> {{ persona.telefono }}</p>
+            <p><strong>Email:</strong> {{ persona.email }}</p>
 
-    <div class="detalle-info">
-        <img src="{% if persona.imagen %}{{ persona.imagen.url }}{% else %}{% static 'img/usuarios_pre.png' %}{% endif %}" alt="Foto de {{ persona.nombre }}" class="detalle-foto">
-        
-        <ul>
-            <li><strong>Nombre:</strong> {{ persona.nombre }}</li>
-            <li><strong>Apellido:</strong> {{ persona.apellido }}</li>
-            <li><strong>Teléfono:</strong> {{ persona.telefono }}</li>
-            <li><strong>Email:</strong> {{ persona.email }}</li>
-        </ul>
+            {% if empleado %}
+                <p><strong>Puesto:</strong> {{ empleado.puesto_empresa }}</p>
+                <p><strong>Área:</strong> {{ empleado.area_trabajo }}</p>
+                <p><strong>Estado laboral:</strong> {{ empleado.estado }}</p>
+            {% endif %}
+
+            <div class="botones-perfil">
+                <a href="{% url 'listar_personas' %}" class="btn-circular azul">Volver</a>
+                <a href="{% url 'actualizar_persona' persona.id %}" class="btn-circular naranja">Editar</a>
+            </div>
+        </div>
     </div>
-
-    <a href="{% url 'actualizar_persona' persona.id %}" class="btn-edit">Editar</a>
-    <a href="{% url 'listar_personas' %}" class="btn-view">Volver a la lista</a>
 </div>
 {% endblock %}

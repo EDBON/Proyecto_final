@@ -3,21 +3,77 @@
 
 {% block title %}Mi Perfil{% endblock %}
 
-{% block content %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="perfil-header-banner">
+    {# The circle and cross patterns will be added via CSS background images/elements #}
+    <div class="perfil-header-content">
+        <div class="perfil-header-icon">
+            <i class="fas fa-user"></i> {# FontAwesome icon for user #}
+        </div>
+        <h1 class="perfil-main-title">Perfil</h1>
+        <p class="perfil-subtitle">Perfil de trabajador de {{ persona.eps }}</p>
+    </div>
+</div>
 
 <div class="perfil-container">
-  <h2>Mi Perfil</h2>
-
-  <div class="perfil-info">
-    <img src="{% if persona.imagen %}{{ persona.imagen.url }}{% else %}{% static 'img/usuarios_pre.png' %}{% endif %}" alt="Foto de perfil" class="perfil-foto">
-
-    <ul>
-      <li><strong>Nombre:</strong> {{ persona.nombre }}</li>
-      <li><strong>Apellido:</strong> {{ persona.apellido }}</li>
-      <li><strong>Teléfono:</strong> {{ persona.telefono }}</li>
-      <li><strong>Email:</strong> {{ persona.email }}</li>
-    </ul>
-  </div>
+    <div class="perfil-section">
+        <h2 class="section-title">Mi Perfil</h2>
+        <div class="perfil-main-content">
+            <div class="perfil-photo-wrapper">
+                <img src="{% if persona.imagen %}{{ persona.imagen.url }}{% else %}{% static 'img/usuarios_pre.png' %}{% endif %}" alt="Foto de perfil" class="perfil-foto">
+            </div>
+            <div class="perfil-details">
+                <h3 class="perfil-name">{{ persona.nombre }} {{ persona.apellido }}</h3>
+                <ul class="perfil-list">
+                    {# Aquí es donde se inserta el span para el cálculo de edad con JavaScript #}
+                    <li><strong>Edad:</strong> <span id="edadPersona" data-dob="{{ persona.fecha_nac|date:'Y-m-d' }}">Cargando...</span></li>
+                    <li><strong>Ubicación:</strong> {{ persona.direccion }}</li>
+                    <li><strong>Género:</strong> {{ persona.genero }}</li>
+                    <li><strong>Tipo Doc:</strong> {{ persona.tipo_doc }}</li>
+                    <li><strong>Número Doc:</strong> {{ persona.num_doc }}</li>
+                    <li><strong>Teléfono:</strong> {{ persona.telefono }}</li>
+                    <li><strong>Email:</strong> {{ persona.email }}</li>
+                    {# Add employee-specific fields if applicable #}
+                    {% if empleado %}
+                        <li><strong>Puesto:</strong> {{ empleado.puesto_empresa }}</li>
+                        <li><strong>Área:</strong> {{ empleado.area_trabajo }}</li>
+                        <li><strong>Estado Laboral:</strong> {{ empleado.estado }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{# Este bloque es ideal para scripts JavaScript #}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const edadSpan = document.getElementById('edadPersona');
+        if (edadSpan) {
+            // Obtenemos la fecha de nacimiento del atributo data-dob
+            const dobString = edadSpan.getAttribute('data-dob'); 
+            
+            if (dobString && dobString !== 'None') { // Asegurarse de que la fecha existe y no es 'None'
+                const birthDate = new Date(dobString);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+
+                // Ajustar la edad si el cumpleaños de este año aún no ha pasado
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                edadSpan.textContent = age + ' años';
+            } else {
+                edadSpan.textContent = 'N/A'; // O cualquier otro mensaje si la fecha no está disponible
+            }
+        }
+    });
+</script>
 {% endblock %}

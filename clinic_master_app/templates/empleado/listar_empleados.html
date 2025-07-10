@@ -4,16 +4,22 @@
 {% block title %}Lista de Empleados{% endblock %}
 
 {% block content %}
-    <!-- Enlazamos el CSS para listar -->
-    <link rel="stylesheet" href="{% static 'css/listar.css' %}">
 
     <div class="content-container">
         <h2>Lista de Empleados</h2>
+        <div class="search-bar-container">
+        <form action="{% url 'listar_empleados' %}" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Buscar por documento..." value="{{ request.GET.q }}">
+            <button type="submit" class="search-btn">Buscar</button>
+        </form>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Foto</th>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Área de Trabajo</th>
                         <th>Estado</th>
@@ -25,19 +31,20 @@
                     {% for empleado in empleados %}
                     <tr>
                         <td>                    
-                            {% if persona.imagen %}
-                                <img src="{{ persona.imagen.url }}" alt="Imagen de {{ persona.nombres }}" width="100">
+                            {% if empleado.id_persona.imagen %}
+                                <img src="{{ empleado.id_persona.imagen.url }}" alt="Foto de perfil" class="profile-picture" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                             {% else %}
-                                <img src="{% static 'img/usuarios_pre.png' %}" alt="Imagen predeterminada" width="100">
+                                <img src="{% static 'img/usuarios_pre.png' %}" alt="Foto por defecto" class="profile-picture" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                             {% endif %}
                         </td>     
+                        <td>{{ empleado.id_persona.num_doc }}</td>    
                         <td>{{ empleado.id_persona.nombre }} {{ empleado.id_persona.apellido }}</td>
                         <td>{{ empleado.area_trabajo }}</td>
                         <td>{{ empleado.estado }}</td>
                         <td>{{ empleado.puesto_empresa }}</td>
                         <td>
-                            <a href="{% url 'actualizar_empleado' empleado.id %}" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{% url 'actualizar_empleado' empleado.id %}" class="btn-edit">Editar</a>
+                            <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn-des">Eliminar</a>
                         </td>
                     </tr>
                     {% empty %}

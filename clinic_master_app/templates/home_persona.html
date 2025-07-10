@@ -1,0 +1,114 @@
+{% extends 'persona.html' %}
+
+{% load static %}
+
+{% block title %}Inicio - Meditek{% endblock %}
+
+{% block page_title %}Bienvenido a Meditek{% endblock %} {# Título más amigable para el dashboard logueado #}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home_persona.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-section">
+    <div class="user-profile-box">
+        {% if request.user.persona.imagen %}
+            <img src="{{ request.user.persona.imagen.url }}" alt="Foto de perfil" class="profile-picture">
+        {% else %}
+            <img src="{% static 'images/usuarios_pre.png' %}" alt="Foto por defecto" class="profile-picture">
+        {% endif %}
+        <h2>¡Hola, {{ request.user.persona.nombre }}! ¿Qué haremos hoy? 👋</h2>
+        <p>Aquí tienes un resumen de las principales secciones de Meditek. Utiliza el menú lateral para una navegación más detallada.</p>
+    </div>
+
+    <hr>
+
+    <div class="card-grid">
+
+        {# Tarjeta para Cargos #}
+        <a href="{% url 'listar_formacion' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+                <h3>Añadir formacion</h3>
+                <p>Agrega nuevos niveles de formacion que tengas.</p>
+            </div>
+        </a>
+        
+        {# Tarjeta para Personas Inactivas #}
+        <a href="{% url 'listar_documentos_empleado' %}" class="dashboard-card-link">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fas fa-user-slash"></i></div>
+                <h3>Gestionar mis documentos</h3>
+                <p>Visualiza y gestiona tus documentos .</p>
+            </div>
+        </a>
+    </div>
+
+    ---
+
+    <div class="info-section">
+        <h2>¿Por qué Meditek es tu mejor opción? 🚀</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <h4><i class="fas fa-shield-alt"></i> Seguridad y Confidencialidad</h4>
+                <p>Implementamos las más altas medidas de seguridad para proteger tus datos y los de tus pacientes, garantizando la confidencialidad en todo momento.</p>
+            </div>
+            <div class="info-item">
+                <h4><i class="fas fa-chart-line"></i> Eficiencia Operativa</h4>
+                <p>Optimiza tus flujos de trabajo con herramientas intuitivas y automatizadas que te permiten ahorrar tiempo y recursos en la gestión diaria.</p>
+            </div>
+            <div class="info-item">
+                <h4><i class="fas fa-headset"></i> Soporte Dedicado 24/7</h4>
+                <p>Nuestro equipo de soporte está siempre disponible para asistirte con cualquier duda o problema, asegurando una experiencia fluida y sin interrupciones.</p>
+            </div>
+            <div class="info-item">
+                <h4><i class="fas fa-cogs"></i> Personalización Total</h4>
+                <p>Adapta Meditek a las necesidades específicas de tu clínica. Nuestra plataforma es flexible y se ajusta a tus requerimientos.</p>
+            </div>
+            <div class="info-item">
+                <h4><i class="fas fa-cloud"></i> Acceso Desde Cualquier Lugar</h4>
+                <p>Con nuestra solución basada en la nube, accede a tu información de forma segura desde cualquier dispositivo, en cualquier momento y lugar.</p>
+            </div>
+            <div class="info-item">
+                <h4><i class="fas fa-sync-alt"></i> Actualizaciones Constantes</h4>
+                <p>Mejoramos continuamente nuestra plataforma con nuevas funcionalidades y mejoras, manteniéndote siempre a la vanguardia de la tecnología.</p>
+            </div>
+        </div>
+    </div>
+
+    ---
+
+    <div class="image-gallery">
+        <h2>Nuestras Instalaciones y Equipo 📸</h2>
+        <p>Un vistazo a lo que hace de Meditek el lugar ideal para trabajar y gestionar tu salud.</p>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="{% static 'images/clinic_master_office1.jpg' %}" alt="Oficina 1">
+                <div class="image-caption">Oficinas Modernas</div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'images/clinic_master_team.jpg' %}" alt="Equipo de trabajo">
+                <div class="image-caption">Nuestro Equipo Dedicado</div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'images/clinic_master_reception.jpg' %}" alt="Recepción">
+                <div class="image-caption">Área de Recepción</div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'images/clinic_master_consulting.jpg' %}" alt="Consultorio">
+                <div class="image-caption">Consultorios Equipados</div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'images/clinic_master_training.jpg' %}" alt="Capacitación">
+                <div class="image-caption">Sesiones de Capacitación</div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'images/clinic_master_meeting.jpg' %}" alt="Reunión">
+                <div class="image-caption">Espacios de Colaboración</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

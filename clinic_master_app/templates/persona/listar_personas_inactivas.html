@@ -3,6 +3,12 @@
 
 {% block content %}
 <h2>Personas Inactivas</h2>
+  <div class="search-bar-container">
+        <form action="{% url 'listar_personas_inactivas' %}" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Buscar por documento..." value="{{ request.GET.q }}">
+            <button type="submit" class="search-btn">Buscar</button>
+        </form>
+    </div>
 <div>
     <table class="table table-striped">
         <thead>
@@ -18,7 +24,8 @@
                 <td>{{ persona.nombre }}</td>
                 <td>{{ persona.apellido }}</td>
                 <td>
-                    <a href="{% url 'reactivar_persona' persona.id %}" class="btn btn-warning btn-sm">Reactivar</a>
+            <a href="{% url 'detalle_persona' persona.id %}"    class="btn-view">Ver usuario</a>
+                    <a href="{% url 'reactivar_persona' persona.id %}" class="btn-edit">Reactivar</a>
                 </td>
             </tr>
             {% empty %}

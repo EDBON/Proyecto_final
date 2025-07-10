@@ -8,6 +8,12 @@
 
 <div class="content-container">
   <h2>Lista de Personas</h2>
+  <div class="search-bar-container">
+        <form action="{% url 'listar_personas' %}" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Buscar por documento..." value="{{ request.GET.q }}">
+            <button type="submit" class="search-btn">Buscar</button>
+        </form>
+    </div>
 
   <div class="table-responsive">
     <table>
@@ -37,7 +43,8 @@
           </td>
           <td>
             <a href="{% url 'actualizar_persona' persona.id %}" class="btn-edit">Editar</a>
-            <a href="{% url 'detalle_persona' persona.id %}" class="btn-view">Ver usuario</a>
+            <a href="{% url 'detalle_persona' persona.id %}"    class="btn-view">Ver usuario</a>
+            <a href="{% url 'desactivar_persona' persona.id %}" class="btn-des">desactivar</a>
           </td>
         </tr>
         {% empty %}

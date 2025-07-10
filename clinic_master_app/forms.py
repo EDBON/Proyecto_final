@@ -7,6 +7,7 @@ from django_select2.forms import ModelSelect2Widget
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError 
+from django.core.validators import FileExtensionValidator
 
 
 # region Login Form
@@ -45,7 +46,7 @@ class EpsForm(forms.ModelForm):
             'nombre_eps': forms.TextInput(attrs={'class': 'form-control'}),
             'direccion_eps': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono_eps': forms.TextInput(attrs={'class': 'form-control'}),
-            'email_eps': forms.EmailInput(attrs={'class': 'form-control'}),
+            'email_eps': forms.EmailInput(attrs={'class': 'form-email'}),
         }
 
 # region Persona Form
@@ -62,7 +63,7 @@ class PersonaForm(forms.ModelForm):
             'genero': forms.Select(attrs={'class': 'form-select'}),
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-email'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
@@ -134,9 +135,47 @@ class FormacionForm(forms.ModelForm):
             'fecha_fin': forms.DateInput(attrs={'class': 'flatpickr form-control'}),
             'titulo_obtenido': forms.TextInput(attrs={'class': 'form-control'}),
             'estado': forms.Select(attrs={'class': 'form-select'}),
-            'certificado': forms.FileInput(attrs={'class': 'form-control'}),
+            # CAMBIO CLAVE AQUI: Usa FileInput directamente y solo tu clase custom
+            'certificado': forms.FileInput(attrs={'class': 'custom-file-input'}), 
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Apply specific classes to existing widgets (as you had before)
+        # You might want to refactor this loop for all non-certificado fields
+        # Or ensure all widgets have form-control if that's your design choice
+        for field_name, field_instance in self.fields.items():
+            if field_name != 'certificado':
+                if isinstance(field_instance.widget, (forms.TextInput, forms.Textarea)):
+                    field_instance.widget.attrs.update({'class': 'form-control'})
+                elif isinstance(field_instance.widget, forms.Select):
+                    field_instance.widget.attrs.update({'class': 'form-select'})
+                elif isinstance(field_instance.widget, forms.DateInput):
+                    field_instance.widget.attrs.update({'class': 'flatpickr form-control'})
+
+
+        # Define allowed document extensions
+        allowed_extensions = ['pdf', 'doc', 'docx', 'txt', 'rtf', 'odt', 'ods', 'odp'] 
+        
+        # Apply the validator to the 'certificado' field
+        self.fields['certificado'].validators.append(FileExtensionValidator(allowed_extensions))
+
+        # Add the 'accept' attribute for client-side filtering (UX)
+        self.fields['certificado'].widget.attrs.update({'accept': ','.join([f'.{ext}' for ext in allowed_extensions])})
+
+        # --- IMPORTANT FOR UPDATE FORMS ---
+        # If the form is bound to an instance (i.e., it's an update form)
+        if self.instance and self.instance.certificado:
+            # Set a data attribute on the widget for JavaScript to read
+            # Extract just the filename for display
+            self.fields['certificado'].widget.attrs['data-initial-file-name'] = self.instance.certificado.name.split('/')[-1]
+            
+            # Optionally, you can add a clear checkbox here if you still want that functionality
+            # and handle its logic in your view/template.
+            # self.fields['clear_certificado'] = forms.BooleanField(required=False, label="Eliminar archivo actual")
+
 
 # region Empleado Form
 class EmpleadoForm(forms.ModelForm):
@@ -155,13 +194,37 @@ class EmpleadoForm(forms.ModelForm):
 class DocumentoEmpleadoForm(forms.ModelForm):
     class Meta:
         model = DocumentosEmpleado
-        exclude = ['empleado', 'subido_por']  # Se asignan en la vista
+        exclude = ['empleado', 'subido_por']
         widgets = {
             'tipo_documento': forms.Select(attrs={'class': 'form-control'}),
-            'nombre_documento': forms.TextInput(attrs={'class': 'form-control'}),  # Asegúrate de incluir este campo
-            'archivo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'nombre_documento': forms.TextInput(attrs={'class': 'form-control'}),
+            # CAMBIO CLAVE AQUI: Usar FileInput y tu clase custom para ocultarlo
+            'archivo': forms.FileInput(attrs={'class': 'custom-file-input'}), 
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Aplicar clases 'form-control'/'form-select' a otros campos automáticamente
+        for field_name, field_instance in self.fields.items():
+            if field_name != 'archivo': # Excluir 'archivo' ya que tiene su clase específica en widgets
+                if isinstance(field_instance.widget, (forms.TextInput, forms.Textarea)):
+                    field_instance.widget.attrs.update({'class': 'form-control'})
+                elif isinstance(field_instance.widget, forms.Select):
+                    field_instance.widget.attrs.update({'class': 'form-select'})
+
+        # Opcional: Validar extensiones de archivo si solo quieres documentos específicos
+        # Define las extensiones permitidas para documentos (ej: PDF, DOCX, TXT)
+        allowed_extensions = ['pdf', 'doc', 'docx', 'txt', 'rtf', 'odt', 'ods', 'odp'] 
+        self.fields['archivo'].validators.append(FileExtensionValidator(allowed_extensions))
+
+        # Añadir el atributo 'accept' para una mejor UX en el navegador
+        self.fields['archivo'].widget.attrs.update({'accept': ','.join([f'.{ext}' for ext in allowed_extensions])})
+
+        # Para formularios de actualización: pasar el nombre del archivo inicial al JS
+        if self.instance and self.instance.archivo:
+            self.fields['archivo'].widget.attrs['data-initial-file-name'] = self.instance.archivo.name.split('/')[-1]
 
 
 # region HistorialMovimiento Form

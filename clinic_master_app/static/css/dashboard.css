@@ -281,6 +281,15 @@ body {
 
 
 /* --- Navbar/Header Superior Styles --- */
+
+.navbar-center{
+    background-image: url('../images/MEDITEK.png');
+    padding: 10px;
+    margin: inherit;
+    width: 210px;
+    height: 20px;
+}
+
 .navbar {
     height: var(--header-height);
     background-color: var(--white);
@@ -332,7 +341,7 @@ body {
 /* --- Content Area Styles --- */
 .content-area {
     flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
-    padding: 30px;
+    padding: 10px;
     background-color: var(--background-grey);
     overflow-y: auto; /* Habilita el scroll si el contenido es largo */
 }
@@ -345,24 +354,41 @@ body {
     margin-bottom: 30px;
 }
 
+/* Asegúrate de que .card-grid sea un flex container */
 .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente línea */
+    gap: 20px; /* Espacio entre las tarjetas, ajusta según necesites */
+    justify-content: start; /* O 'center', 'space-between', etc. */
+}
+
+.dashboard-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    /* --- Añadido para igualar el tamaño --- */
+    flex: 1; /* Permite que el elemento crezca y se encoja. Intenta con flex: 1 1 280px; para un tamaño base */
+    min-width: 250px; /* Tamaño mínimo para evitar que sean demasiado pequeñas en pantallas chicas */
+    max-width: 30%; /* Ajusta esto para controlar cuántas columnas quieres (ej. 30% para 3 columnas) */
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+}
+
+.dashboard-card-link:hover .dashboard-card {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .dashboard-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 15px var(--card-shadow);
-    text-align: center;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    /* Asegura que la tarjeta en sí misma ocupe todo el espacio disponible del enlace */
+    height: 100%; 
+    display: flex; /* Puedes usar flexbox aquí para alinear el contenido verticalmente */
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente si hay espacio extra */
+    align-items: center; /* Centra el contenido horizontalmente */
+    padding: 20px; /* Agrega padding para que el contenido no esté pegado al borde */
 }
 
 .card-icon {
@@ -560,4 +586,19 @@ body {
 
 .user-avatar a:hover {
   color: #2F80ED; /* Color azul solo al pasar el cursor */
+}
+
+.user-profile-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-blue); /* o el color que uses */
 }

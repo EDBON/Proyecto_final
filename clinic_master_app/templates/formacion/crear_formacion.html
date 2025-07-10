@@ -1,32 +1,91 @@
-{% extends 'perosna.html' %}
+{% extends 'persona.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/listar.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+{% endblock %}
 
 {% block title %}Crear Formación{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Crear Formación</h2>
-    <form method="POST">
+<div class="container form-container">
+    <h2 class="form-title">Crear Formación</h2>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{% url 'listar_formacion' empleado_id=empleado.id %}">Volver a la lista</a>
+        {% for field in form %}
+            {# Si 'certificado' es el nombre de tu campo FileField #}
+            {% if field.name == 'certificado' %}
+                <div class="form-group file-upload-container">
+                    {{ field.label_tag }}
+                    <div class="custom-file-input-wrapper">
+                        {# La etiqueta actúa como botón, conectada al input oculto #}
+                        <label for="{{ field.id_for_label }}" class="custom-file-button">
+                            <i class="fas fa-file-upload"></i> Seleccionar archivo
+                        </label>
+                        {# Renderiza el input de tipo file. La clase 'custom-file-input' ya viene de forms.py #}
+                        {{ field }} 
+                        <span id="file-name-{{ field.id_for_label }}" class="file-name-display">Ningún archivo seleccionado</span>
+                    </div>
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span class="errorlist">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {# Resto de campos del formulario #}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span class="errorlist">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
 
+        <div class="form-actions">
+            <button type="submit" class="primary">Guardar</button>
+            <a href="{% url 'listar_formacion' empleado_id=empleado.id %}" class="cancel-text-button">Volver a la lista</a>
+        </div>
     </form>
 </div>
-<!-- Flatpickr CSS -->
+
+{% block extra_js %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-<!-- Activación de Flatpickr -->
 <script>
     flatpickr(".flatpickr", {
-        dateFormat: "Y-m-d",  // Formato de la fecha (AAAA-MM-DD)
-        altInput: true,       // Muestra el valor en un formato más amigable
-        altFormat: "F j, Y",  // Formato alternativo (Ej: March 20, 2025)
-        locale: "es",          // Cambia el idioma al español
-        maxDate: new Date(),    // Máximo: hoy (año actual)
+        dateFormat: "Y-m-d",  // Formato de la fecha (AAAA-MM-DD)
+        altInput: true,       // Muestra el valor en un formato más amigable
+        altFormat: "F j, Y",  // Formato alternativo (Ej: March 20, 2025)
+        locale: "es",          // Cambia el idioma al español
+        maxDate: new Date(),    // Máximo: hoy
+    });
+
+    // Script para mostrar el nombre del archivo seleccionado
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.querySelector('.custom-file-input');
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                const fileNameDisplay = document.getElementById(`file-name-${this.id}`);
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = 'Ningún archivo seleccionado';
+                }
+            });
+        }
     });
 </script>
+{% endblock %}
 
 {% endblock %}

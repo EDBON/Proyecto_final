@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="{% static 'css/listar.css' %}">
 <div class="container">
     <h2>Lista de Formaciones</h2>
-    <a href="{% url 'crear_formacion' empleado_id=empleado.id %}" class="btn btn-success mb-3">Añadir Formación</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -28,11 +27,13 @@
                 <td>{{ formacion.fecha_fin }}</td>
                 <td>{{ formacion.titulo_obtenido }}</td>
                 <td>
-                    <a href="{% url 'actualizar_formacion' formacion.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'actualizar_formacion' formacion.id %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'eliminar_formacion' formacion.id %}" class="btn-des">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'crear_formacion' empleado_id=empleado.id %}" class="btn-view">Añadir Formación</a>
 </div>
 {% endblock %}

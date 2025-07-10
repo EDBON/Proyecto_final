@@ -1,0 +1,396 @@
+
+/* --- Progress Bar / Stepper Styles --- */
+.progress-stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Ajustar si los labels son de diferente altura */
+    width: 80%; /* Ancho de la barra de avance, ajustable */
+    max-width: 900px;
+    margin: 40px auto; /* Centrar y darle espacio */
+    position: relative; /* Para la línea de conexión */
+    padding-bottom: 20px; /* Espacio para el texto de los pasos */
+}
+
+.progress-stepper::before {
+    content: '';
+    position: absolute;
+    top: 25px; /* Altura de la línea, ajusta para centrar con los círculos */
+    left: 0;
+    right: 0;
+    height: 4px; /* Grosor de la línea */
+    background-color: var(--border-color); /* Color de la línea inactiva */
+    z-index: 1; /* Asegura que la línea esté detrás de los pasos */
+}
+
+.progress-stepper .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1; /* Permite que los pasos ocupen el espacio equitativamente */
+    position: relative;
+    z-index: 2; /* Asegura que los pasos estén por encima de la línea */
+    text-align: center;
+}
+
+.progress-stepper .step .circle {
+    width: 50px; /* Tamaño del círculo */
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--border-color); /* Color de círculo inactivo */
+    color: var(--text-color-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: 3px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.progress-stepper .step .label {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+}
+
+/* Estilo para el paso COMPLETO */
+.progress-stepper .step.completed .circle {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.progress-stepper .step.completed .label {
+    color: var(--primary-blue);
+}
+
+/* Estilo para el paso ACTIVO (formulario actual) */
+.progress-stepper .step.active .circle {
+    background-color: var(--white);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(47, 128, 237, 0.2); /* Anillo de enfoque */
+}
+
+.progress-stepper .step.active .label {
+    color: var(--text-color-dark);
+    font-weight: 700;
+}
+
+/* Línea de avance (conexión entre pasos) */
+.progress-stepper .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 25px; /* Alineado con el círculo */
+    left: 50%;
+    width: 100%;
+    height: 4px;
+    background-color: var(--border-color); /* Color por defecto */
+    transform: translateX(calc(50% + 2px)); /* Mover la línea a la mitad del siguiente círculo */
+    z-index: 0;
+    transition: background-color 0.3s ease;
+}
+
+/* La línea se vuelve azul si el paso actual O el siguiente está completado/activo */
+.progress-stepper .step.completed + .step::before {
+    background-color: var(--primary-blue);
+}
+
+/* Para la línea que conecta el paso activo con el anterior */
+.progress-stepper .step.active ~ .step::before {
+    background-color: var(--border-color); /* Asegura que la línea siguiente sea gris */
+}
+
+.progress-stepper .step.active + .step::before {
+    background-color: var(--border-color);
+}
+
+/* Mejorar la línea de progreso entre los círculos */
+.progress-stepper .line-segment {
+    position: absolute;
+    top: 25px;
+    height: 4px;
+    background-color: var(--primary-blue);
+    z-index: 1;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Responsividad para la barra de avance */
+@media (max-width: 768px) {
+    .progress-stepper {
+        width: 95%;
+        margin: 30px auto;
+        flex-wrap: wrap; /* Permite que los pasos se envuelvan si no caben */
+        justify-content: center; /* Centrar los pasos envueltos */
+        padding-bottom: 10px; /* Reducir padding */
+    }
+
+    .progress-stepper::before {
+        display: none; /* Ocultar la línea en móvil si se envuelven */
+    }
+
+    .progress-stepper .step {
+        flex: none; /* Desactivar flex-grow */
+        width: 30%; /* Ocupar 1/3 del ancho */
+        margin: 10px 1.5%; /* Espacio entre pasos */
+    }
+
+    .progress-stepper .step .circle {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .progress-stepper .step .label {
+        font-size: 0.8rem;
+    }
+
+    /* Ocultar la pseudo-línea en móvil */
+    .progress-stepper .step:not(:last-child)::after {
+        display: none;
+    }
+}
+
+/* forms.css */
+
+/* Contenedor general */
+.container.form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9faff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+/* Título del formulario */
+.form-title {
+    text-align: center;
+    color: #2f80ed;
+    margin-bottom: 25px;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+/* Estilo para cada grupo de campo */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Etiquetas */
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs, selects y textareas */
+.form-group select,
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group textarea {
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.flatpickr {
+    cursor: pointer;
+}
+.form-email{
+        padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+/* Focus en inputs */
+.form-group select:focus,
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2f80ed;
+    box-shadow: 0 0 5px rgba(47, 128, 237, 0.5);
+}
+
+
+/* Botones */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-actions button.primary {
+    background-color: #2f80ed;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-actions button.primary:hover {
+    background-color: #266bbd;
+}
+
+.form-actions a.cancel-text-button {
+    color: #2f80ed;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form-actions a.cancel-text-button:hover {
+    text-decoration: underline;
+}
+
+.profile-picture-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the entire component */
+    margin-bottom: 20px;
+}
+
+.profile-picture-label {
+    cursor: pointer;
+    display: block;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #ccc;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 0; /* <--- CAMBIA esto a cero para que sea cuadrado */
+}
+
+
+.profile-picture-label:hover {
+    background-color: #d0d0d0; /* Slightly darker on hover */
+    border-color: #999; /* Darker border on hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.profile-picture-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute; /* Take up full space within label */
+    top: 0;
+    left: 0;
+}
+
+.profile-picture-placeholder .fas.fa-camera {
+    font-size: 4em; /* Size of the camera icon */
+    color: #666; /* Color of the camera icon */
+}
+
+.current-profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* o 'cover' si prefieres que llene el contenedor */
+    border-radius: 0; /* elimina el redondeo */
+    background-color: white;
+}
+
+
+/* Optional: Style for hidden screen reader text */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Error styling if you have it in forms.css */
+.errorlist {
+    color: #dc3545; /* Red color for errors */
+    font-size: 0.85em;
+    margin-top: 5px;
+    padding-left: 0;
+    list-style: none;
+    text-align: center;
+}
+
+
+.file-upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Alinea los elementos a la izquierda */
+        margin-bottom: 20px;
+    }
+
+.file-upload-container label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #333;
+    }
+
+.custom-file-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Espacio entre el botón y el nombre del archivo */
+        width: 100%; /* Asegura que ocupe el ancho del contenedor */
+    }
+
+.custom-file-input {
+        /* Oculta el input de archivo original */
+        display: none;
+    }
+
+.custom-file-button {
+        display: inline-flex; /* Permite que el ícono y el texto estén en línea */
+        align-items: center;
+        padding: 8px 15px;
+        background-color: #28a745; /* Color verde para el botón de archivo */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+.custom-file-button:hover {
+        background-color: #218838; /* Tono más oscuro al pasar el ratón */
+    }
+
+.custom-file-button i {
+        margin-right: 8px; /* Espacio entre el ícono y el texto */
+    }
+
+.file-name-display {
+        flex-grow: 1; /* Permite que ocupe el espacio restante */
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #e9ecef; /* Fondo ligeramente gris para el nombre del archivo */
+        color: #555;
+        font-style: italic;
+        white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+        overflow: hidden; /* Oculta el texto si es demasiado largo */
+        text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
+    }

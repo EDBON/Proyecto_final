@@ -48,6 +48,7 @@ urlpatterns = [
     
     # home
     path("home/", views.home, name="home"),
+    path('', views.home_persona, name='persona'),
     path("medico/", views.medico, name="persona"),
     path("auxiliar/", views.auxiliar, name="persona"),
     path("persona/", views.persona, name="persona"),
@@ -61,6 +62,8 @@ urlpatterns = [
     # region Rutas para Persona
 
     path('perfil/', views.perfil_usuario, name='perfil_usuario'),
+    path('perfil_persona/', views.perfil_persona, name='perfil_persona'),
+
 
 
     path('crear_persona/', views.crear_persona, name='crear_persona'),
@@ -98,11 +101,6 @@ urlpatterns = [
     path('listar_movimientos/', views.listar_movimientos, name='listar_movimientos'),
     
 
-    # region Rutas para RelacionesJerarquicas
-    path('crear_relacion_jerarquica/', views.crear_relacion_jerarquica, name='crear_relacion_jerarquica'),
-    path('listar_relaciones_jerarquicas/', views.listar_relaciones_jerarquicas, name='listar_relaciones_jerarquicas'),
-    path('eliminar_relacion_jerarquica/<int:relacion_id>/', views.eliminar_relacion_jerarquica, name='eliminar_relacion_jerarquica'),
-    path('editar_relacion_jerarquica/<int:pk>/', views.editar_relacion_jerarquica, name='editar_relacion_jerarquica'),
     # region Rutas para Cargos
     path('crear_cargo/', views.crear_cargo, name='crear_cargo'),
     path('listar_cargos/', views.listar_cargos, name='listar_cargos'),

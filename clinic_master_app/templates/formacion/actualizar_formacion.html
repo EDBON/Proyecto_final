@@ -1,15 +1,105 @@
 {% extends 'persona.html' %}
 
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/listar.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
 {% block title %}Actualizar Formación{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Actualizar Formación</h2>
-    <form method="POST">
+<div class="container form-container"> {# Añadida la clase 'form-container' #}
+    <h2 class="form-title">Actualizar Formación</h2> {# Añadida la clase 'form-title' #}
+    <form method="POST" enctype="multipart/form-data"> {# IMPORTANTE: Añade enctype="multipart/form-data" para subir archivos #}
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Actualizar</button>
-        <a href="{% url 'listar_formacion' empleado_id=empleado.id %}" class="btn btn-secondary">Cancelar</a>
+        {% for field in form %}
+            {# Si 'certificado' es el nombre de tu campo FileField #}
+            {% if field.name == 'certificado' %}
+                <div class="form-group file-upload-container">
+                    {{ field.label_tag }}
+                    <div class="custom-file-input-wrapper">
+                        <label for="{{ field.id_for_label }}" class="custom-file-button">
+                            <i class="fas fa-file-upload"></i> Seleccionar archivo
+                        </label>
+                        {# Renderiza el input de tipo file. La clase 'custom-file-input' ya viene de forms.py #}
+                        {{ field }} 
+                        <span id="file-name-{{ field.id_for_label }}" class="file-name-display">
+                            {% if field.value %}
+                                {{ field.value.name|cut:"formacion_documentos/" }} {# Muestra el nombre actual del archivo, quitando el prefijo de la ruta #}
+                            {% else %}
+                                Ningún archivo seleccionado
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span class="errorlist">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {# Resto de campos del formulario #}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span class="errorlist">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="form-actions"> {# Contenedor para los botones de acción #}
+            <button type="submit" class="primary">Actualizar</button> {# Clase 'primary' para el botón #}
+            <a href="{% url 'listar_formacion' empleado_id=empleado.id %}" class="cancel-text-button">Cancelar</a> {# Clase 'cancel-text-button' para el enlace #}
+        </div>
     </form>
 </div>
+
+{% block extra_js %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<script>
+    flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d",  // Formato de la fecha (AAAA-MM-DD)
+        altInput: true,       // Muestra el valor en un formato más amigable
+        altFormat: "F j, Y",  // Formato alternativo (Ej: March 20, 2025)
+        locale: "es",          // Cambia el idioma al español
+        maxDate: new Date(),    // Máximo: hoy
+    });
+
+    // Script para mostrar el nombre del archivo seleccionado
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.querySelector('.custom-file-input');
+        if (fileInput) {
+            const fileNameDisplay = document.getElementById(`file-name-${fileInput.id}`);
+            
+            // Set initial file name if a file already exists (for update forms)
+            if (fileInput.dataset.initialFileName) {
+                fileNameDisplay.textContent = fileInput.dataset.initialFileName;
+            }
+
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    // If no file is selected, revert to initial or 'Ningún archivo'
+                    if (this.dataset.initialFileName) {
+                         fileNameDisplay.textContent = this.dataset.initialFileName;
+                    } else {
+                         fileNameDisplay.textContent = 'Ningún archivo seleccionado';
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
 {% endblock %}

@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Clinic Master{% endblock %}</title>
+    <title>{% block title %}Meditek{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'images/logo-clinic_master.png' %}">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> 
     <link rel="stylesheet" href="{% static 'css/listar.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     {% block extra_css %}{% endblock %} {# Para CSS adicional de plantillas hijas #}
 </head>
 <body>
@@ -19,19 +19,16 @@
         <aside class="sidebar collapsed" id="sidebar">
             <div class="sidebar-header">
                 <img src="{% static 'images/logo-clinic_master.png' %}" alt="Clinic Master Logo">
-                <span class="app-name">Clinic Master</span>
+                <span class="app-name">Meditek</span>
             </div>
             
             <ul class="sidebar-menu">
                 <li><a href="{% url 'home' %}" data-tooltip="Dashboard"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
                 <li><a href="{% url 'listar_personas' %}" data-tooltip="Personas"><i class="fas fa-user-friends"></i> <span>Personas</span></a></li>
-                <li><a href="{% url 'listar_empleados' %}" data-tooltip="Empleados"><i class="fas fa-briefcase"></i> <span>Empleados</span></a></li>
                 <li><a href="{% url 'listar_usuarios' %}" data-tooltip="Usuarios"><i class="fas fa-users"></i> <span>Usuarios</span></a></li>
+                <li><a href="{% url 'listar_empleados' %}" data-tooltip="Empleados"><i class="fas fa-briefcase"></i> <span>Empleados</span></a></li>
                 <li><a href="{% url 'listar_contratos' %}" data-tooltip="Contratos"><i class="fas fa-file-contract"></i> <span>Contratos</span></a></li>
-                <li><a href="{% url 'crear_usuario' %}" data-tooltip="Crear Usuario"><i class="fas fa-user-plus"></i> <span>Crear Usuario</span></a></li>
-                <li><a href="{% url 'listar_movimientos' %}" data-tooltip="Historial Movimientos"><i class="fas fa-history"></i> <span>Historial Movimientos</span></a></li>
-                <li><a href="{% url 'listar_relaciones_jerarquicas' %}" data-tooltip="Relaciones Jerárquicas"><i class="fas fa-sitemap"></i> <span>Relaciones Jerárquicas</span></a></li>
-                <li><a href="{% url 'listar_cargos' %}" data-tooltip="Cargos"><i class="fas fa-user-tie"></i> <span>Cargos</span></a></li>
+                <li><a href="{% url 'listar_personas_inactivas' %}" data-tooltip="Cargos"><i class="fas fa-user-slash"></i> <span>Personas Inactivas</span></a></li>
                 {# Puedes añadir más enlaces aquí si los necesitas #}
             </ul>
 
@@ -43,14 +40,16 @@
             </div>
         </aside>
 
-        <div class="main-content-wrapper expanded" id="main-content-wrapper">
+        <div class="main-content-wrapper expanded" id="main-content-wrapper" >
             <header class="navbar">
                 <div class="navbar-left">
                     <button class="toggle-sidebar-btn" id="toggleSidebarBtn"><i class="fas fa-bars"></i></button>
                     <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
                 </div>
+                <div class="navbar-center" href="{% url 'home' %}">
+                </div>
                 <div class="navbar-right">
-                    <span class="user-info">Hola, {{ request.user.username }}!</span> {# Puedes mostrar el nombre del usuario logueado aquí #}
+                    <span class="user-info">Hola, {{ request.user.persona.nombre}}!</span> {# Puedes mostrar el nombre del usuario logueado aquí #}
                     <div class="user-avatar">
                         <a href="{% url 'perfil_usuario' %}">
                             <i class="fas fa-user-circle"></i>
@@ -68,7 +67,7 @@
 
             <footer class="footer">
                 <div class="footer-container">
-                    <p>© 2024 Clinic Master. Todos los derechos reservados.</p>
+                    <p>© 2024 Meditek. Todos los derechos reservados.</p>
                     <div class="footer-links">
                         <a href="#">Privacidad</a>
                         <a href="#">Términos</a>
@@ -78,6 +77,8 @@
             </footer>
         </div>
     </div>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -91,6 +92,9 @@
             });
         });
     </script>
-    {% block extra_js %}{% endblock %} {# Para JS adicional de plantillas hijas #}
+
+{% block extra_js %}{% endblock %}
+
+
 </body>
 </html>

@@ -1,13 +1,119 @@
-{% extends "base.html" %}
+{% extends 'persona.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/listar.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+{% endblock %}
+
+{% block title %}Crear Documento de Empleado{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Crear Documento de Empleado</h2>
-    <form method="post" enctype="multipart/form-data">
+<div class="container form-container mt-4"> {# Añadida la clase 'form-container' #}
+    <h2 class="form-title">Crear Documento de Empleado</h2> {# Añadida la clase 'form-title' #}
+    <form method="post" enctype="multipart/form-data"> {# IMPRESCINDIBLE: enctype para subida de archivos #}
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{% url 'listar_documentos_empleado' %}" class="btn btn-secondary">Cancelar</a>
+        {% for field in form %}
+            {# Si 'archivo' es el nombre de tu campo FileField en DocumentosEmpleado #}
+            {% if field.name == 'archivo' %}
+                <div class="form-group file-upload-container">
+                    {{ field.label_tag }}
+                    
+                    {# Este bloque es útil si este mismo template se usa para actualizar y ya hay un archivo #}
+                    {% if form.instance.archivo %}
+                        <div class="current-file-display">
+                            Actualmente: <a href="{{ form.instance.archivo.url }}" target="_blank">
+                                {# Ajusta la ruta si es necesario, ej: 'documentos_empleado/' #}
+                                {{ form.instance.archivo.name|cut:"documentos_empleado/" }} 
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    <div class="custom-file-input-wrapper">
+                        <label for="{{ field.id_for_label }}" class="custom-file-button">
+                            <i class="fas fa-file-upload"></i> Seleccionar archivo
+                        </label>
+                        {# Renderiza el input de tipo file. La clase 'custom-file-input' viene de forms.py #}
+                        {{ field }} 
+                        <span id="file-name-{{ field.id_for_label }}" class="file-name-display">
+                            {# Este span será actualizado por JS o mostrará el nombre inicial #}
+                            Ningún archivo seleccionado
+                        </span>
+                    </div>
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span class="errorlist">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {# Resto de campos del formulario #}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span class="errorlist">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="form-actions"> 
+            <button type="submit" class="primary">Guardar</button> 
+            <a href="{% url 'listar_documentos_empleado' %}" class="cancel-text-button">Cancelar</a> 
+        </div>
     </form>
 </div>
+
+{% block extra_js %}
+{# Puedes incluir Flatpickr si tienes campos de fecha en este formulario #}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<script>
+    flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "F j, Y",
+        locale: "es",
+        maxDate: new Date(),
+    });
+</script> 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.querySelector('.custom-file-input');
+        if (fileInput) {
+            const fileNameDisplay = document.getElementById(`file-name-${fileInput.id}`);
+            
+            // Set initial file name if a file already exists (for update forms)
+            const initialFileName = fileInput.dataset.initialFileName;
+            if (initialFileName) {
+                fileNameDisplay.textContent = initialFileName;
+            } else {
+                fileNameDisplay.textContent = 'Ningún archivo seleccionado'; // Fallback if no initial file
+            }
+
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    // If no new file is selected, revert to initial or 'Ningún archivo'
+                    if (initialFileName) { 
+                         fileNameDisplay.textContent = initialFileName;
+                    } else {
+                         fileNameDisplay.textContent = 'Ningún archivo seleccionado';
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
 {% endblock %}
